@@ -35,9 +35,20 @@ class MainPage(BaseHandler):
         self.render_main()
 # [END Main Page]
 
+# [START New Post]
+class NewPost(BaseHandler):
+    def render_newpost(self):
+        self.render("newpost.html")
+
+    def get(self):
+        self.render_newpost()
+
+# [END New Post]
+
 
 # [START app]
 app = webapp2.WSGIApplication([
     ('/', MainPage),
+    ('/newpost', NewPost)
 ], debug=True)
 # [END app]
