@@ -9,5 +9,16 @@
 	<h1>Cubiio Blog</h1>
 
 	Add new post <a href="/newpost">click here</a>
+
+	<hr>
+
+	{% for post in posts %}
+		<div class="blog">
+			<div class="blog-title">Title: {{post.title}}</div>
+			<div class="blog-created">Created: {{post.created}}</div>
+			<pre class="blog-post">{{post.blogPost}}</pre>
+		</div>
+	{% endfor %}
+
 </body>
 </html>

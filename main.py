@@ -26,10 +26,28 @@ class BaseHandler(webapp2.RequestHandler):
 # [END template mgmt & BaseHandler]
 
 
+# [START GQL datastore & entity types]
+class Blogposts(db.Model):
+    """
+    this class enables adding to the App Engine database,
+    and specifies the entity data types
+    required=True is a constraint enforces posts to db must have a title
+    auto_add_now adds an entry automatically with every submission
+    """
+    title = db.StringProperty(required=True)
+    blogPost = db.TextProperty(required=True)
+    created = db.DateTimeProperty(auto_now_add=True)
+# [END GQL datastore & entity types]
+
+
 # [START Main Page]
 class MainPage(BaseHandler):
-    def render_main(self):
-        self.render("main.html")
+    def render_main(self, title="", blogPost=""):
+        posts = db.GqlQuery(
+            "SELECT * from Blogposts ORDER BY created DESC")
+
+        self.render("main.html", title=title,
+                    blogPost=blogPost, posts=posts)
 
     def get(self):
         self.render_main()
@@ -50,6 +68,9 @@ class NewPost(BaseHandler):
         blogPost = self.request.get("blogPost")
 
         if title and blogPost:
+            bp = Blogposts(title=title, blogPost=blogPost)
+            bp.put()
+
             self.redirect("/thanks")
         else:
             error = "Please submit both a title and a blogpost!"
