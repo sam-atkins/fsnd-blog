@@ -35,20 +35,39 @@ class MainPage(BaseHandler):
         self.render_main()
 # [END Main Page]
 
+
 # [START New Post]
 class NewPost(BaseHandler):
-    def render_newpost(self):
-        self.render("newpost.html")
+    def render_newpost(self, title="", blogPost="", error=""):
+        self.render("newpost.html", title=title,
+                    blogPost=blogPost, error=error)
 
     def get(self):
         self.render_newpost()
 
+    def post(self):
+        title = self.request.get("title")
+        blogPost = self.request.get("blogPost")
+
+        if title and blogPost:
+            self.redirect("/thanks")
+        else:
+            error = "Please submit both a title and a blogpost!"
+            self.render_newpost(title, blogPost, error)
 # [END New Post]
+
+
+# [START Thanks page - temp]
+class Thanks(BaseHandler):
+    def get(self):
+        self.render("thanks.html")
+# [END Thanks page - temp]
 
 
 # [START app]
 app = webapp2.WSGIApplication([
     ('/', MainPage),
-    ('/newpost', NewPost)
+    ('/newpost', NewPost),
+    ('/thanks', Thanks),
 ], debug=True)
 # [END app]
