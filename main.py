@@ -31,17 +31,18 @@ class Blogposts(db.Model):
     """
     this class enables adding to the App Engine database,
     and specifies the entity data types
-    required=True is a constraint enforces posts to db must have a title
-    auto_add_now adds an entry automatically with every submission
     """
     title = db.StringProperty(required=True)
     blogPost = db.TextProperty(required=True)
     created = db.DateTimeProperty(auto_now_add=True)
+    # required=True is a constraint enforces posts to db must have a title
+    # auto_add_now adds an entry automatically with every submission
 # [END GQL datastore & entity types]
 
 
 # [START Main Page]
 class MainPage(BaseHandler):
+    """renders the main page with all submitted blog posts"""
     def render_main(self, title="", blogPost=""):
         posts = db.GqlQuery(
             "SELECT * from Blogposts ORDER BY created DESC")
@@ -64,6 +65,11 @@ class NewPost(BaseHandler):
         self.render_newpost()
 
     def post(self):
+        """
+        if submission is valid, adds to db and redirects
+        to thanks page
+        if invalid, displays error message, and renders same form
+        """
         title = self.request.get("title")
         blogPost = self.request.get("blogPost")
 
