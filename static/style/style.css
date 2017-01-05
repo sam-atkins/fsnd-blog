@@ -1,0 +1,78 @@
+/* ==========================================================================
+	Main	
+========================================================================== */
+
+body {
+	font-family: sans-serif;
+	width: 800px;
+	margin: 0 auto;
+	padding: 10px;
+}
+
+.main-title {
+    display: block;
+    color: #222;
+    font-size: 30px;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 20px;
+    text-decoration: none;
+}
+
+/* ==========================================================================
+	Blog post styles:  main page and permalinks
+========================================================================== */
+
+.blog + .blog {
+    margin-top: 15px;
+}
+
+.blog-head {
+    position: relative;
+    border-bottom: 3px solid #666;
+}
+
+.blog-title {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.blog-created {
+    position: absolute;
+    right: 0px;
+    bottom: 0px;
+    color: #999;
+}
+
+.blog-content {
+    margin-top: 5px;
+}
+
+/* ==========================================================================
+	New Post 
+========================================================================== */
+
+label {
+	display: block;
+	font-style: 20px;
+}
+
+input[type=text] {
+	width: 400px;
+	height: 20px;
+	font-size: 17px;
+	font-family: monospace;
+	margin-bottom: 10px;
+}
+
+textarea {
+	width: 400px;
+	height: 200px;
+	font-size: 17px;
+	font-family: monospace;
+	margin-bottom: 10px;
+}
+
+.error {
+	color: red;
+}

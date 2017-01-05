@@ -3,9 +3,10 @@
 	
 	{% for post in posts %}
 		<div class="blog">
-			<div class="blog-title">Title: {{post.title}}</div>
-			<div class="blog-created">Created: {{post.created.strftime("%d %b %Y")}}</div>
-			<dev class="blog-modified">Last Modified: {{post.last_modified.strftime("%d %b %Y")}}</dev>
+			<div class="blog-head">
+				<div class="blog-title">Title: {{post.title}}</div>
+				<div class="blog-created">Created: {{post.created.strftime("%d %b %Y")}}</div>
+			</div>
 			<div class="blog-post">{{post.blogPost}}</div>
 		</div>
 	{% endfor %}
