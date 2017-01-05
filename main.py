@@ -55,16 +55,10 @@ class Blogposts(db.Model):
 # [START Main Page]
 class MainPage(BaseHandler):
     """renders the main page with all submitted blog posts"""
-
-    def render_main(self, title="", blogPost=""):
+    def get(self):
         posts = db.GqlQuery(
             "SELECT * from Blogposts ORDER BY created DESC LIMIT 10")
-
-        self.render("main.html", title=title,
-                    blogPost=blogPost, posts=posts)
-
-    def get(self):
-        self.render_main()
+        self.render("main.html", posts=posts)
 # [END Main Page]
 
 
