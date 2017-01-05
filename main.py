@@ -13,21 +13,26 @@ jinja_env = jinja2.Environment(loader=jinja2.FileSystemLoader(template_dir),
                                autoescape=True)
 
 
+# Convenience functions
 class BaseHandler(webapp2.RequestHandler):
     def write(self, *a, **kw):
+        """shortcut to writing 'response.out.write' """
         self.response.out.write(*a, **kw)
 
     def render_str(self, template, **params):
+        """takes as inputs a template and a dictionary of params"""
         t = jinja_env.get_template(template)
         return t.render(params)
 
     def render(self, template, **kw):
+        """calls write and render_str to render a template"""
         self.write(self.render_str(template, **kw))
 # [END template mgmt & BaseHandler]
 
 
 # [START db Key]
 def blog_key(name='default'):
+    """Defines the key for the datastore entity i.e. data objects"""
     return db.Key.from_path('blogs', name)
 # [END db Key]
 
