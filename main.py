@@ -54,7 +54,8 @@ class Blogposts(db.Model):
 
 # [START Main Page]
 class MainPage(BaseHandler):
-    """renders the main page with all submitted blog posts"""
+    """renders the main page with submitted blog posts"""
+
     def get(self):
         posts = db.GqlQuery(
             "SELECT * from Blogposts ORDER BY created DESC LIMIT 10")
@@ -81,14 +82,29 @@ class NewPost(BaseHandler):
         blogPost = self.request.get("blogPost")
 
         if title and blogPost:
-            bp = Blogposts(title=title, blogPost=blogPost)
+            bp = Blogposts(parent=blog_key(), title=title, blogPost=blogPost)
             bp.put()
 
-            self.redirect("/thanks")
+            # self.redirect("/thanks")
+            self.redirect('/%s' % str(bp.key().id()))
         else:
             error = "Please submit both a title and a blogpost!"
             self.render_newpost(title, blogPost, error)
 # [END New Post]
+
+
+# [START Permalink post page]
+class PostPage(BaseHandler):
+    def get(self, post_id):
+        key = db.Key.from_path('Blogposts', int(post_id), parent=blog_key())
+        post = db.get(key)
+
+        if not post:
+            self.error(404)
+            return
+
+        self.render("permalink.html", post=post)
+# [END Permalink post page]
 
 
 # [START Thanks page - temp]
@@ -102,6 +118,7 @@ class Thanks(BaseHandler):
 app = webapp2.WSGIApplication([
     ('/', MainPage),
     ('/newpost', NewPost),
+    ('/([0-9]+)', PostPage),
     ('/thanks', Thanks),
 ], debug=True)
 # [END app]
