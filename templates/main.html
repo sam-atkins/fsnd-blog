@@ -1,24 +1,13 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Cubiio Blog</title>
-</head>
-<body>
-	<h1>Cubiio Blog</h1>
-
-	Add new post <a href="/newpost">click here</a>
-
-	<hr>
-
+{% extends "base.html" %}
+{% block content %}
+	
 	{% for post in posts %}
 		<div class="blog">
 			<div class="blog-title">Title: {{post.title}}</div>
-			<div class="blog-created">Created: {{post.created}}</div>
-			<pre class="blog-post">{{post.blogPost}}</pre>
+			<div class="blog-created">Created: {{post.created.strftime("%d %b %Y")}}</div>
+			<dev class="blog-modified">Last Modified: {{post.last_modified.strftime("%d %b %Y")}}</dev>
+			<div class="blog-post">{{post.blogPost}}</div>
 		</div>
 	{% endfor %}
 
-</body>
-</html>
+{% endblock content %}
