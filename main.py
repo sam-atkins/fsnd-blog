@@ -26,6 +26,12 @@ class BaseHandler(webapp2.RequestHandler):
 # [END template mgmt & BaseHandler]
 
 
+# [START db Key]
+def blog_key(name='default'):
+    return db.Key.from_path('blogs', name)
+# [END db Key]
+
+
 # [START GQL datastore & entity types]
 class Blogposts(db.Model):
     """
@@ -35,6 +41,7 @@ class Blogposts(db.Model):
     title = db.StringProperty(required=True)
     blogPost = db.TextProperty(required=True)
     created = db.DateTimeProperty(auto_now_add=True)
+    last_modified = db.DateTimeProperty(auto_now=True)
     # required=True is a constraint enforces posts to db must have a title
     # auto_add_now adds an entry automatically with every submission
 # [END GQL datastore & entity types]
@@ -43,9 +50,10 @@ class Blogposts(db.Model):
 # [START Main Page]
 class MainPage(BaseHandler):
     """renders the main page with all submitted blog posts"""
+
     def render_main(self, title="", blogPost=""):
         posts = db.GqlQuery(
-            "SELECT * from Blogposts ORDER BY created DESC")
+            "SELECT * from Blogposts ORDER BY created DESC LIMIT 10")
 
         self.render("main.html", title=title,
                     blogPost=blogPost, posts=posts)
