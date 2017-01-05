@@ -107,18 +107,10 @@ class PostPage(BaseHandler):
 # [END Permalink post page]
 
 
-# [START Thanks page - temp]
-class Thanks(BaseHandler):
-    def get(self):
-        self.render("thanks.html")
-# [END Thanks page - temp]
-
-
 # [START app]
 app = webapp2.WSGIApplication([
     ('/', MainPage),
     ('/newpost', NewPost),
     ('/([0-9]+)', PostPage),
-    ('/thanks', Thanks),
 ], debug=True)
 # [END app]
