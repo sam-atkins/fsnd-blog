@@ -1,20 +1,19 @@
 # Udacity FullStack NanoDegree Project:
-## Blog
+## Basic Blog [version 1]
+This is a basic blog which meets the following requirements:
 
-### Iteration 1
-* Basic blog
-* Requirements:
-	* Front page that lists entries
-	* Form to submit new entries
-	* Permalink page for entries
+* Front page that lists entries
+* Form to submit new entries
+* Permalink page for entries
+
 
 ### Built with
 * Python
-* Google App Engine
+* Google App Engine and Datastore
 * Jinja2 templates
 
 ## Status
-* Basic blog: WIP
+* Complete
 
 ## Demo
-**To Do** add demo url once livee
+Version 1 demo is live at [app.spot](https://cubiio-blog.appspot.com/)
