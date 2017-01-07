@@ -12,16 +12,41 @@
 	</head>
 
 <body>
-	<a href="/" class="main-title">
+
+{# START Header & Nav  #}
+
+	<header class="header">
+	  <div class="header__inner">
+	  	{# <a href="/" class="header__anchor"> #}
+	    	<img class="header__logo" src="../static/images/logo.svg" alt="Avatar of Sam Atkins">
+	    	<h1 class="header__title">Cubiio Blog</h1>
+	  	{# </a> #}
+	    <a id="menu" class="header__menu">
+	      <i class="fa fa-bars"></i>
+	    </a>
+	  </div>
+	</header>
+
+	<nav id="drawer" class="nav">
+	  <ul class="nav__list">
+	    <li class="nav__item"><a href="/">Home</a></li>
+	    <li class="nav__item"><a href="/newpost">Write</a></li>
+	    <li class="nav__item"><a href="#">Placeholder</a></li>
+	  </ul>
+	</nav>
+
+{# 	<a href="/" class="main-title">
 	    <h1>Cubiio Blog</h1>
 	</a>
 	Add new post <a href="/newpost">click here</a>
-	<hr>
+	<hr> #}
+
+{# START Content #}
 
 	{% block content %}		
 	{% endblock content %}
 
-{# footer start #}
+{# START Footer  #}
 
 <section class="footer">
 	<footer class="footer__wrapper">

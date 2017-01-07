@@ -20,16 +20,99 @@ body {
 }
 
 /* ==========================================================================
+  Header
+========================================================================== */
+
+.header {
+  width: 100%;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.26);
+  min-height: 56px;
+  transition: min-height 0.3s;
+}
+
+.header__inner {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.header__logo {
+  height: 72px;
+  margin-left: 1em;
+  margin-right: 1em;
+  vertical-align: top;
+  margin-top: 1em;
+  margin-bottom: 1em;
+  border-radius: 50px;
+}
+
+.header__title {
+  font-weight: 300;
+  font-size: 2em;
+  margin: 0.75em 0.25em;
+  display: inline-block;
+  color: #212121;
+}
+
+.header__menu {
+  display: flex;
+  align-self: center;
+}
+
+/* ==========================================================================
+  Navigation
+========================================================================== */
+
+.nav {
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.nav__list {
+  display: flex;
+  justify-content: flex-start;
+  max-width: 100%;
+  padding: 0;
+  margin: 0;
+}
+
+.nav__item {
+  display: flex;
+  flex: 1;
+  box-sizing: border-box;
+  display: inline-block;
+  width: 20%;
+  text-align: center;
+  line-height: 24px;
+  padding: 10px;
+  text-transform: uppercase;
+}
+
+.nav a {
+  text-decoration: none;
+  color: #616161;
+}
+
+.nav a:hover {
+  text-decoration: underline;
+  color: #212121;
+}
+
+/* ==========================================================================
 	Blog post styles:  main page and permalinks
 ========================================================================== */
 
 .blog {
+	margin-top: 50px;
 	margin-bottom: 50px;
 }
 
-.blog + .blog {
+/*.blog + .blog {
     margin-top: 50px;
-}
+}*/
 
 .blog-head {
     position: relative;
