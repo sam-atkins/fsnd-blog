@@ -23,8 +23,12 @@ body {
 	Blog post styles:  main page and permalinks
 ========================================================================== */
 
+.blog {
+	margin-bottom: 50px;
+}
+
 .blog + .blog {
-    margin-top: 15px;
+    margin-top: 50px;
 }
 
 .blog-head {
@@ -46,6 +50,7 @@ body {
 
 .blog-content {
     margin-top: 5px;
+    margin-bottom: 100px;
 }
 
 /* ==========================================================================
@@ -75,4 +80,38 @@ textarea {
 
 .error {
 	color: red;
+}
+
+/* ==========================================================================
+  Footer section
+========================================================================== */
+
+// flex container 
+.footer__wrapper {
+	margin: 50px auto 0 auto;
+	width: 65%;
+	font-size: 18px;
+	font-weight: 200;
+	line-height: 30px;
+	border-radius: 6px;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+}
+
+.footer__text {
+	text-align: center;
+	font-size: 13px;
+}
+
+.social__logos {
+	list-style: none;
+ 	display: flex;
+ 	justify-content: space-between;
+
+}
+
+.social__logos .social {
+ 	align-self: center;
+ 	flex:1;
 }
