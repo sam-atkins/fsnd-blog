@@ -90,3 +90,6 @@ ENV/
 
 # Google App Engine
 static/images
+
+# project related stuff
+secret_stuff.py
