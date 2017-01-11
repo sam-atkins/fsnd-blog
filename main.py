@@ -317,6 +317,10 @@ class Login(BaseHandler):
         u = User.login(username, password)
         if u:
             self.login(u)
+            # set cookie
+            self.response.headers.add_header(
+                'Set-Cookie', 'name=%s; Path=/'
+                % str(make_secure_val(username)))
             self.redirect('/welcome')
         else:
             msg = 'Invalid login'
