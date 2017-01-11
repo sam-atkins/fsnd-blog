@@ -25,8 +25,8 @@
 	      {# <i class="fa fa-bars"></i> #}
 	    </a>
 		<div class="login-area">
-	  		{% if user %}
-	    	{{user.name}} (<a class="login-link" href="/logout">logout</a>)
+	  		{% if username %}
+	    	{{username}} (<a class="login-link" href="/logout">logout</a>)
 	  		{% else %}
 	    	<a class="login-link" href="/login">Login</a> | <a class="login-link" href="/signup">Sign-up</a>
 	  		{% endif %}
