@@ -277,8 +277,6 @@ class Register(SignUp):
             self.response.headers.add_header(
                 'Set-Cookie', 'name=%s; Path=/'
                 % str(make_secure_val(self.username)))
-            # or login
-            # self.login(u)
             self.redirect('/welcome')
 
 
