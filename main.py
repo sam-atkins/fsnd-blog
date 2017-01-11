@@ -61,18 +61,6 @@ class BaseHandler(webapp2.RequestHandler):
         cookie_val = self.request.cookies.get(name)
         return cookie_val and check_secure_val(cookie_val)
 
-    def login(self, user):
-        self.set_secure_cookie('user_id', str(user.key().id()))
-
-    def logout(self):
-        self.reponse.headers.add_header('Set-Cookie', 'user_id=; Path=/')
-
-    def initialize(self, *a, **kw):
-        """Reads and checks the cookie is valid"""
-        webapp2.RequestHandler.initialize(self, *a, **kw)
-        uid = self.read_secure_cookie('user_id')
-        self.user = uid and User.by_id(int(uid))
-
 
 def render_post(response, blogpost):
     response.out.write('<b>' + blogpost.subject + '</b><br>')
@@ -316,7 +304,6 @@ class Login(BaseHandler):
 
         u = User.login(username, password)
         if u:
-            self.login(u)
             # set cookie
             self.response.headers.add_header(
                 'Set-Cookie', 'name=%s; Path=/'
@@ -331,9 +318,9 @@ class Login(BaseHandler):
 # [START Logout]
 class Logout(BaseHandler):
     def get(self):
-        self.logout()
-        self.redirect('/welcome')
-        self.redirect('signup')
+        # set cookie to name = zero value; i.e. delete it
+        self.response.headers.add_header('Set-Cookie', 'name=; Path=/')
+        self.redirect('/')
 # [END name]
 
 
