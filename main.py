@@ -20,14 +20,14 @@ jinja_env = jinja2.Environment(loader=jinja2.FileSystemLoader(template_dir),
                                autoescape=True)
 
 
-# def render_str(self, template, **params):
-#     """takes as inputs a template and a dictionary of params"""
-#     t = jinja_env.get_template(template)
-#     return t.render(params)
+def hash_str(s):
+            return hmac.new(secret_stuff.SECRET,
+                            s.encode('utf-8'), hashlib.md5).hexdigest()
 
 
-def make_secure_val(val):
-    return "%s|%s" % (val, hmac.new(secret_stuff.SECRET, val).hexdigest)
+def make_secure_val(s):
+    h = hash_str(s)
+    return s + "|" + h
 
 
 def check_secure_val(h):
@@ -35,11 +35,6 @@ def check_secure_val(h):
     if h == make_secure_val(val):
         return val
 
-
-# check return cookie after logout
-# COOKIE_RE = re.compile(r'.+=;\s*Path=/')
-# def valid_cookie(cookie):
-#     return cookie and COOKIE_RE.match(cookie)
 
 # Convenience functions
 class BaseHandler(webapp2.RequestHandler):
@@ -76,7 +71,7 @@ class BaseHandler(webapp2.RequestHandler):
         """Reads and checks the cookie is valid"""
         webapp2.RequestHandler.initialize(self, *a, **kw)
         uid = self.read_secure_cookie('user_id')
-        self.user = uid and Users.by_id(int(uid))
+        self.user = uid and User.by_id(int(uid))
 
 
 def render_post(response, blogpost):
@@ -133,7 +128,7 @@ def users_key(group='default'):
     return db.Key.from_path('users', group)
 
 
-class Users(db.Model):
+class User(db.Model):
     name = db.StringProperty(required=True)
     pw_hash = db.StringProperty(required=True)
     email = db.StringProperty()      # no required statement as user optional
@@ -141,20 +136,20 @@ class Users(db.Model):
     # decorators
     @classmethod
     def by_id(cls, uid):
-        return cls.get_by_id(uid, parent=users_key())
+        return User.get_by_id(uid, parent=users_key())
 
     @classmethod
     def by_name(cls, name):
-        u = cls.all().filter('name =', name).get()
+        u = User.all().filter('name =', name).get()
         return u
 
     @classmethod
     def register(cls, name, pw, email=None):
         pw_hash = make_pw_hash(name, pw)
-        return cls(parent=users_key(),
-                   name=name,
-                   pw_hash=pw_hash,
-                   email=email)
+        return User(parent=users_key(),
+                    name=name,
+                    pw_hash=pw_hash,
+                    email=email)
 
     @classmethod
     def login(cls, name, pw):
@@ -282,24 +277,29 @@ class SignUp(BaseHandler):
 class Register(SignUp):
     def done(self):
         # make sure the user doesn't already exist
-        u = Users.by_name(self.username)
+        u = User.by_name(self.username)
         if u:
             error = 'That user already exists.'
             self.render('signup.html', error_username=error)
         else:
-            u = Users.register(self.username, self.password, self.email)
+            u = User.register(self.username, self.password, self.email)
             u.put()
 
-            # set cookie or login
-            self.login(u)
+            # set cookie
+            self.response.headers.add_header(
+                'Set-Cookie', 'name=%s; Path=/'
+                % str(make_secure_val(self.username)))
+            # or login
+            # self.login(u)
             self.redirect('/welcome')
 
 
 # [START Welcome]
 class Welcome(BaseHandler):
     def get(self):
-        if self.user:
-            self.render('welcome.html', username=self.user.name)
+        username = self.request.cookies.get('name')
+        if username and username != "":
+            self.render('welcome.html', username=check_secure_val(username))
         else:
             self.redirect('/signup')
 # [END Welcome]
@@ -314,7 +314,7 @@ class Login(BaseHandler):
         username = self.request.get('username')
         password = self.request.get('password')
 
-        u = Users.login(username, password)
+        u = User.login(username, password)
         if u:
             self.login(u)
             self.redirect('/welcome')
@@ -338,7 +338,7 @@ app = webapp2.WSGIApplication([
     ('/', MainPage),
     ('/newpost', NewPost),
     ('/([0-9]+)', PostPage),
-    # ('/signup-form', SignUp),
+    # ('/signup', SignUp),
     ('/signup', Register),
     ('/welcome', Welcome),
     ('/login', Login),
