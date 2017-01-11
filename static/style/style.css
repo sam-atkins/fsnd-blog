@@ -32,33 +32,65 @@ body {
 
 .header__inner {
   display: flex;
-  flex-wrap: wrap;
   width: 100%;
   margin-left: auto;
   margin-right: auto;
 }
 
 .header__logo {
+  display: flex;
   height: 72px;
   margin-left: 1em;
   margin-right: 1em;
-  vertical-align: top;
   margin-top: 1em;
   margin-bottom: 1em;
   border-radius: 50px;
 }
 
 .header__title {
+  display: flex;
+  flex: 1;
   font-weight: 300;
   font-size: 2em;
   margin: 0.75em 0.25em;
-  display: inline-block;
   color: #212121;
 }
 
 .header__menu {
   display: flex;
   align-self: center;
+}
+
+/* ==========================================================================
+  login / logout
+========================================================================== */
+
+.login-area {
+  display: flex;
+  flex: 1;
+  font-size: 13px;
+  color: gray;
+  margin: 0.75em 0.25em;
+  top: 10px;
+  right: 10px;
+  align-self: center;
+  padding: 0px 15px 15px 300px;
+}
+
+.login-link {
+  display: flex;
+  color: gray;
+  text-decoration: none;
+  padding-right: 5px;
+  padding-left: 5px;
+}
+
+.login-link:visited {
+  color: gray;
+}
+
+.login-link:hover {
+  text-decoration: underline;
 }
 
 /* ==========================================================================

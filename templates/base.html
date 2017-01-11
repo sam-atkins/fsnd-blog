@@ -24,15 +24,22 @@
 	    <a id="menu" class="header__menu">
 	      {# <i class="fa fa-bars"></i> #}
 	    </a>
+		<div class="login-area">
+	  		{% if user %}
+	    	{{user.name}} (<a class="login-link" href="/logout">logout</a>)
+	  		{% else %}
+	    	<a class="login-link" href="/login">Login</a> | <a class="login-link" href="/signup">Sign-up</a>
+	  		{% endif %}
+		</div>
 	  </div>
+
 	</header>
 
 	<nav id="drawer" class="nav">
 	  <ul class="nav__list">
 	    <li class="nav__item"><a href="/">Home</a></li>
 	    <li class="nav__item"><a href="/newpost">Write</a></li>
-	    <li class="nav__item"><a href="/signup">Sign-up</a></li>
-	    <li class="nav__item"><a href="/login">Login</a></li>
+	    <li class="nav__item"><a href="#">placeholder</a></li>
 	  </ul>
 	</nav>
 
