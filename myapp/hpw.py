@@ -3,9 +3,9 @@ import string
 import hashlib
 
 
-# makes a salt from 5 random letters
-# py2 = string.letters / # py3 = string.ascii_letters
+# helper functions to hash passwords and validate hashed passwords
 def make_salt(length=5):
+    # py2 = string.letters / # py3 = string.ascii_letters
     return "".join(random.choice(string.letters) for x in range(length))
 
 

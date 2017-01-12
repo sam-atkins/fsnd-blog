@@ -5,27 +5,31 @@ from hpw import *
 # [START GQL Blogposts datastore & entity types]
 class Blogposts(db.Model):
     """
-    enables adding to the App Engine database,
-    and specifies the entity data types
+    Enables adding to the App Engine database,
+    and specifies the entity data types.
+    (required=True) - constraint enforces posts to database
+    must have this value.
+    email value - optional so no required=True statement;
+    and STringProperty type used as EmailProperty type is
+    mandatory and if used throws an error if no email is entered
+    by the user.
     """
+
     title = db.StringProperty(required=True)
     blogPost = db.TextProperty(required=True)
     created = db.DateTimeProperty(auto_now_add=True)
     last_modified = db.DateTimeProperty(auto_now=True)
-    # required=True is a constraint enforces posts to db must have a title
-    # auto_add_now adds an entry automatically with every submission
 # [END GQL datastore & entity types]
 
 
 # [START GQL User datastore & entity types]
-# remove decorators? register needs to be kept
-# start: move to models.py & convert to ndb
 class User(db.Model):
     name = db.StringProperty(required=True)
     pw_hash = db.StringProperty(required=True)
-    email = db.StringProperty()      # no required statement as user optional
+    email = db.StringProperty()
 
-    # decorators
+    # decorators provided by Udacity tutor, retained for future
+    # study and learning
     @classmethod
     def by_id(cls, uid):
         return User.get_by_id(uid, parent=users_key())

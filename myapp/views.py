@@ -30,18 +30,26 @@ class BaseHandler(webapp2.RequestHandler):
         """calls write and render_str to render a template"""
         self.write(self.render_str(template, **kw))
 
-    # no expire time incl; will expire when browser closed
     def set_secure_cookie(self, name, val):
+        """
+        Sets cookie. No expire time is set, meaning user session
+        expires when browser closed
+        """
         cookie_val = make_secure_val(val)
         self.response.headers.add_header(
             'Set-Cookie', '%s=%s; Path=/' % (name, cookie_val))
 
     def read_secure_cookie(self, name):
+        """Checks cookie val and if valid, returns the cookie value"""
         cookie_val = self.request.cookies.get(name)
         return cookie_val and check_secure_val(cookie_val)
 
 
 def render_post(response, blogpost):
+    """
+    Solution code from Udacity tutor.
+    Allows line breaks entered by the user to be rendered safely
+    """
     response.out.write('<b>' + blogpost.subject + '</b><br>')
     response.out.write(blogpost.content)
 # [END template mgmt & BaseHandler & cookies]
@@ -53,15 +61,21 @@ def blog_key(name='default'):
     return db.Key.from_path('blogs', name)
 
 
-# solution code; enables user-groups
+# Enables user-groups
 def users_key(group='default'):
+    """
+    Solution code from Udacity tutor, retained for future
+    learning/study. It enables user-groups by assigning each user to a group
+    within the datastore
+    """
+
     return db.Key.from_path('users', group)
 # [END db db keys for blogs and user groups]
 
 
 # [START Main Page]
 class MainPage(BaseHandler):
-    """renders the main page with submitted blog posts"""
+    """Renders the main page with submitted blog posts"""
 
     def get(self):
         posts = db.GqlQuery(
@@ -72,6 +86,8 @@ class MainPage(BaseHandler):
 
 # [START New Post]
 class NewPost(BaseHandler):
+    """Renders the new post page with post entry form"""
+
     def render_newpost(self, title="", blogPost="", error=""):
         self.render("newpost.html", title=title,
                     blogPost=blogPost, error=error)
@@ -81,18 +97,15 @@ class NewPost(BaseHandler):
 
     def post(self):
         """
-        if submission is valid, adds to db and redirects
-        to thanks page
-        if invalid, displays error message, and renders same form
-        """
+        If submission is valid, adds to db and redirects to permalink page.
+        If invalid, displays error message, and renders same form."""
+
         title = self.request.get("title")
         blogPost = self.request.get("blogPost")
 
         if title and blogPost:
             bp = Blogposts(parent=blog_key(), title=title, blogPost=blogPost)
             bp.put()
-
-            # self.redirect("/thanks")
             self.redirect('/%s' % str(bp.key().id()))
         else:
             error = "Please submit both a title and a blogpost!"
@@ -102,6 +115,8 @@ class NewPost(BaseHandler):
 
 # [START Permalink post page]
 class PostPage(BaseHandler):
+    """Renders the permalink page or if a bad url, sends to the 404 page."""
+
     def get(self, post_id):
         key = db.Key.from_path('Blogposts', int(post_id), parent=blog_key())
         post = db.get(key)
@@ -116,6 +131,9 @@ class PostPage(BaseHandler):
 
 # [START Sign-up]
 class SignUp(BaseHandler):
+    """Manages user signup, including error handling if form is not
+    completed correctly."""
+
     def get(self):
         self.render("signup.html")
 
@@ -156,6 +174,12 @@ class SignUp(BaseHandler):
 
 # [START Register]
 class Register(SignUp):
+    """
+    Inherits from the Signup handler.
+    Manages user duplication error if username already exists.
+    If username is valid, puts new user details to the datastore,
+    sets a cookie and redirects to the welcome page."""
+
     def done(self):
         # make sure the user doesn't already exist
         u = User.by_name(self.username)
@@ -176,6 +200,13 @@ class Register(SignUp):
 
 # [START Welcome]
 class Welcome(BaseHandler):
+    """
+    This is the redirect from a successful signup or login
+    Checks if there is a username and that the username is not blank ie " "
+    If OK, renders welcome.html, and confirms the secure cookie
+    Otherwise, redirects to signup.
+    """
+
     def get(self):
         username = self.request.cookies.get('name')
         if username and username != "":
@@ -187,6 +218,13 @@ class Welcome(BaseHandler):
 
 # [START Login]
 class Login(BaseHandler):
+    """
+    Manages user login, using the User Model (datastore) and the decorator,
+    i.e. the @class method login. If the user's username and password are
+    valid, a cookie is set and the user is redirected to welcome.
+    If invalid, the login form is rendered with an error message.
+    """
+
     def get(self):
         self.render('login-form.html')
 
@@ -209,8 +247,13 @@ class Login(BaseHandler):
 
 # [START Logout]
 class Logout(BaseHandler):
+    """
+    Manages user logout, by setting the cookie value to zero
+    'name=;' - this has the effect of deleting the cookie.
+    User is redirected to the homepage
+    """
+
     def get(self):
-        # set cookie to name = zero value; i.e. delete it
         self.response.headers.add_header('Set-Cookie', 'name=; Path=/')
         self.redirect('/')
 # [END name]
