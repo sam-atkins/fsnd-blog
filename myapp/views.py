@@ -81,7 +81,9 @@ class MainPage(BaseHandler):
     def get(self):
         posts = ndb.gql(
             "SELECT * from Blogposts ORDER BY created DESC LIMIT 10")
+
         username = self.request.cookies.get('name')
+
         if username and username != "":
             self.render("main.html", posts=posts,
                         username=check_secure_val(username))
@@ -93,13 +95,6 @@ class MainPage(BaseHandler):
 # [START New Post]
 class NewPost(BaseHandler):
     """Renders the new post page with post entry form"""
-
-    # def render_newpost(self, title="", blogPost="", error=""):
-    #     self.render("newpost.html", title=title,
-    #                 blogPost=blogPost, error=error)
-
-    # def get(self):
-    #     self.render_newpost()
 
     def get(self):
         username = self.request.cookies.get('name')
