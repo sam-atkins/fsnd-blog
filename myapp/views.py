@@ -58,18 +58,19 @@ def render_post(response, blogpost):
 # [START db keys for blogs and user groups]
 def blog_key(name='default'):
     """Defines the key for the datastore entity i.e. data objects"""
-    return db.Key.from_path('blogs', name)
+    # return db.Key.from_path('blogs', name)
+    return ndb.Key('blogs', name)
 
 
 # Enables user-groups
-def users_key(group='default'):
+# def users_key(group='default'):
     """
     Solution code from Udacity tutor, retained for future
     learning/study. It enables user-groups by assigning each user to a group
     within the datastore
     """
 
-    return db.Key.from_path('users', group)
+    # return ndb.Key('users', group)
 # [END db db keys for blogs and user groups]
 
 
@@ -78,8 +79,11 @@ class MainPage(BaseHandler):
     """Renders the main page with submitted blog posts"""
 
     def get(self):
-        posts = db.GqlQuery(
-            "SELECT * from Blogposts ORDER BY created DESC LIMIT 10")
+        posts = Blogposts.query().order()
+        # ("SELECT * from Blogposts ORDER BY created DESC LIMIT 10")
+
+        # posts = ndb.gql(
+        #     "SELECT * from Blogposts ORDER BY created DESC LIMIT 10")
         self.render("main.html", posts=posts)
 # [END Main Page]
 
@@ -106,7 +110,7 @@ class NewPost(BaseHandler):
         if title and blogPost:
             bp = Blogposts(parent=blog_key(), title=title, blogPost=blogPost)
             bp.put()
-            self.redirect('/%s' % str(bp.key().id()))
+            self.redirect('/%s' % str(bp.key.integer_id()))
         else:
             error = "Please submit both a title and a blogpost!"
             self.render_newpost(title, blogPost, error)
@@ -118,8 +122,8 @@ class PostPage(BaseHandler):
     """Renders the permalink page or if a bad url, sends to the 404 page."""
 
     def get(self, post_id):
-        key = db.Key.from_path('Blogposts', int(post_id), parent=blog_key())
-        post = db.get(key)
+        key = ndb.Key('Blogposts', int(post_id), parent=blog_key())
+        post = key.get()
 
         if not post:
             self.error(404)
