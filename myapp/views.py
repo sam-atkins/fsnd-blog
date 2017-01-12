@@ -125,6 +125,8 @@ class PostPage(BaseHandler):
     """Renders the permalink page or if a bad url, sends to the 404 page."""
 
     def get(self, post_id):
+        username = self.request.cookies.get('name')
+
         key = ndb.Key('Blogposts', int(post_id), parent=blog_key())
         post = key.get()
 
@@ -132,7 +134,8 @@ class PostPage(BaseHandler):
             self.error(404)
             return
 
-        self.render("permalink.html", post=post)
+        self.render("permalink.html", post=post,
+                    username=check_secure_val(username))
 # [END Permalink post page]
 
 
