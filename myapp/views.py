@@ -79,11 +79,8 @@ class MainPage(BaseHandler):
     """Renders the main page with submitted blog posts"""
 
     def get(self):
-        posts = Blogposts.query().order()
-        # ("SELECT * from Blogposts ORDER BY created DESC LIMIT 10")
-
-        # posts = ndb.gql(
-        #     "SELECT * from Blogposts ORDER BY created DESC LIMIT 10")
+        posts = ndb.gql(
+            "SELECT * from Blogposts ORDER BY created DESC LIMIT 10")
         self.render("main.html", posts=posts)
 # [END Main Page]
 
