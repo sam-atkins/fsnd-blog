@@ -45,13 +45,13 @@ class BaseHandler(webapp2.RequestHandler):
         return cookie_val and check_secure_val(cookie_val)
 
 
-def render_post(response, blogpost):
+def render_post(response, Blogposts):
     """
     Solution code from Udacity tutor.
     Allows line breaks entered by the user to be rendered safely
     """
-    response.out.write('<b>' + blogpost.subject + '</b><br>')
-    response.out.write(blogpost.content)
+    response.out.write('<b>' + Blogposts.title + '</b><br>')
+    response.out.write(Blogposts.blogPost)
 # [END template mgmt & BaseHandler & cookies]
 
 
@@ -81,7 +81,12 @@ class MainPage(BaseHandler):
     def get(self):
         posts = ndb.gql(
             "SELECT * from Blogposts ORDER BY created DESC LIMIT 10")
-        self.render("main.html", posts=posts)
+        username = self.request.cookies.get('name')
+        if username and username != "":
+            self.render("main.html", posts=posts,
+                        username=check_secure_val(username))
+        else:
+            self.render('main.html', posts=posts)
 # [END Main Page]
 
 
@@ -89,12 +94,18 @@ class MainPage(BaseHandler):
 class NewPost(BaseHandler):
     """Renders the new post page with post entry form"""
 
-    def render_newpost(self, title="", blogPost="", error=""):
-        self.render("newpost.html", title=title,
-                    blogPost=blogPost, error=error)
+    # def render_newpost(self, title="", blogPost="", error=""):
+    #     self.render("newpost.html", title=title,
+    #                 blogPost=blogPost, error=error)
+
+    # def get(self):
+    #     self.render_newpost()
 
     def get(self):
-        self.render_newpost()
+        username = self.request.cookies.get('name')
+        self.render("newpost.html", title="",
+                    blogPost="", error="",
+                    username=check_secure_val(username))
 
     def post(self):
         """
@@ -195,7 +206,9 @@ class Register(SignUp):
             self.response.headers.add_header(
                 'Set-Cookie', 'name=%s; Path=/'
                 % str(make_secure_val(self.username)))
-            self.redirect('/welcome')
+            # test:
+            # self.redirect('/welcome')
+            self.redirect('/')
 # [END Register]
 
 
@@ -239,7 +252,9 @@ class Login(BaseHandler):
             self.response.headers.add_header(
                 'Set-Cookie', 'name=%s; Path=/'
                 % str(make_secure_val(username)))
-            self.redirect('/welcome')
+            # test:
+            # self.redirect('/welcome')
+            self.redirect('/')
         else:
             msg = 'Invalid login'
             self.render('login-form.html', error=msg)
