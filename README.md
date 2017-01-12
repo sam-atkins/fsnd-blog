@@ -59,9 +59,11 @@ To recap (remind myself when coming back to this later on), here's what it means
 Let's look at each of these in detail. 
 
 **/env**
+
 Virtual environment for managing Python packages and dependencies. Include `env` in your gitignore file.
 
 **/myapp**
+
 Includes the following:
 
 * `__init__.py` - This file can be empty and basically enables files to be importred. For a more detailed and techical explanation, read [this](https://stackoverflow.com/questions/448271/what-is-init-py-for#448279) and [this](https://docs.python.org/3/tutorial/modules.html#packages). 
@@ -70,9 +72,11 @@ Includes the following:
 * I also include other helper function files in this folder.
 
 **/static**
+
 This includes all static files, for this project it is only CSS style sheets but for other projects separate sub-folders for images and javascript could be included.
 
 **/templates**
+
 All Jinja HTML templates are included in here.
 
 **Project files in the root directory**
@@ -82,6 +86,7 @@ All Jinja HTML templates are included in here.
 
 
 **Documentation**
+
 All good projects should include a license and a readme.
 
 **Chore files**
