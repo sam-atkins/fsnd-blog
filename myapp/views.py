@@ -161,10 +161,12 @@ class EditPost(BaseHandler):
         self.render("editpost.html", post=post,
                     username=check_secure_val(username))
 
-    def post(self, post_id, title="", blogPost="", error=""):
+    def post(self, post_id):
         """
-        If submission is valid, adds to db and redirects to permalink page.
-        If invalid, displays error message, and renders same form."""
+        If edit is valid, adds edited post to db and redirects back to
+        permalink page.
+        If invalid, displays error message, and renders same form.
+        """
 
         title = self.request.get("title")
         blogPost = self.request.get("blogPost")
