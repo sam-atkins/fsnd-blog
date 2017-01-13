@@ -108,13 +108,23 @@ class NewPost(BaseHandler):
 
         title = self.request.get("title")
         blogPost = self.request.get("blogPost")
+        author = self.request.cookies.get('name')
+        # author = check_secure_val(username)
 
         if title and blogPost:
-            bp = Blogposts(parent=blog_key(), title=title, blogPost=blogPost)
+
+            # create author
+            # author = Author(parent=blogPost)
+
+            bp = Blogposts(parent=blog_key(), title=title,
+                           blogPost=blogPost,
+                           author=check_secure_val(author))
             bp.put()
+
+            # author.put()
+
             self.redirect('/%s' % str(bp.key.integer_id()))
         else:
-            username = self.request.cookies.get('name')
             error = "Please submit both a title and a blogpost!"
             self.render("newpost.html", username=check_secure_val(username),
                         title=title, blogPost=blogPost, error=error)
@@ -127,6 +137,7 @@ class PostPage(BaseHandler):
 
     def get(self, post_id):
         username = self.request.cookies.get('name')
+        author = check_secure_val(username)
 
         key = ndb.Key('Blogposts', int(post_id), parent=blog_key())
         post = key.get()
@@ -136,7 +147,7 @@ class PostPage(BaseHandler):
             return
 
         self.render("permalink.html", post=post,
-                    username=check_secure_val(username))
+                    username=check_secure_val(username), author=author)
 # [END Permalink post page]
 
 

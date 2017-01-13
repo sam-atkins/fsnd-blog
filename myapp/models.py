@@ -3,7 +3,14 @@ from google.appengine.ext import ndb
 from hpw import *
 
 
-# conversion to ndb
+# [START Author]
+class Author(ndb.Model):
+    """ sub model for representing an author"""
+
+    author = ndb.StringProperty(indexed=False)
+# [END Author]
+
+
 # [START GQL Blogposts datastore & entity types]
 class Blogposts(ndb.Model):
     """
@@ -21,6 +28,7 @@ class Blogposts(ndb.Model):
     blogPost = ndb.TextProperty(required=True)
     created = ndb.DateTimeProperty(auto_now_add=True)
     last_modified = ndb.DateTimeProperty(auto_now=True)
+    author = ndb.StructuredProperty(Author)
 # [END GQL datastore & entity types]
 
 
