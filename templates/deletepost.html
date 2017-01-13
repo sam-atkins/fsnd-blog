@@ -1,0 +1,26 @@
+{% extends "base.html" %} 
+
+{% block content %}
+
+<form method="post">
+
+    <div class="blog-head">
+        <div class="blog-title">Title: {{post.title}}
+        </div>
+        <div class="blog-created">Created: {{post.created.strftime("%d %b %Y")}}
+        </div>
+    </div>
+    <div class="blog-content">
+        {{post.blogPost}}
+    </div>
+
+    <div>
+        <p>Are you sure you want to delete this post?</p>
+
+        <button type="submit" name="submit">Delete <i class="fa fa-trash-o" aria-hidden="true"></i></button>
+
+    </div>
+
+</form>
+
+{% endblock content %}

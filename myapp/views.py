@@ -189,6 +189,45 @@ class EditPost(BaseHandler):
 # [END Edit post page]
 
 
+# [START Delete post page]
+class DeletePost(BaseHandler):
+    """
+    Renders the permalink page with the blogpost content and
+    if the user clicks submit, the blog post is deleted.
+    If a bad url, sends to the 404 page.
+    """
+
+    def get(self, post_id):
+        username = self.request.cookies.get('name')
+
+        key = ndb.Key('Blogposts', int(post_id), parent=blog_key())
+        post = key.get()
+
+        if not post:
+            self.error(404)
+            return
+
+        self.render("deletepost.html", post=post,
+                    username=check_secure_val(username))
+
+    def post(self, post_id):
+        """
+        If user hits delete button, post is deleted and returned to home page.
+        """
+
+        title = self.request.get("title")
+        blogPost = self.request.get("blogPost")
+
+        blogPost_key = ndb.Key(
+            'Blogposts', int(post_id), parent=blog_key())
+        bp = blogPost_key.get()
+        bp.title = title
+        bp.blogPost = blogPost
+        bp.key.delete()
+        self.redirect('/')
+# [END Delete post page]
+
+
 # [START Sign-up]
 class SignUp(BaseHandler):
     """Manages user signup, including error handling if form is not
