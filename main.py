@@ -11,6 +11,7 @@ app = webapp2.WSGIApplication([
     ('/', MainPage),
     ('/newpost', NewPost),
     ('/([0-9]+)', PostPage),
+    ('/edit/([0-9]+)', EditPost),
     ('/signup', Register),
     ('/welcome', Welcome),
     ('/login', Login),

@@ -22,7 +22,7 @@ class BaseHandler(webapp2.RequestHandler):
         self.response.out.write(*a, **kw)
 
     def render_str(self, template, **params):
-        """takes as inputs a template and a dictionary of params"""
+        """takes as inputs a template and params"""
         t = jinja_env.get_template(template)
         return t.render(params)
 
@@ -48,7 +48,6 @@ class BaseHandler(webapp2.RequestHandler):
 def render_post(response, Blogposts):
     """
     Solution code from Udacity tutor.
-    Allows line breaks entered by the user to be rendered safely
     """
     response.out.write('<b>' + Blogposts.title + '</b><br>')
     response.out.write(Blogposts.blogPost)
@@ -137,6 +136,57 @@ class PostPage(BaseHandler):
         self.render("permalink.html", post=post,
                     username=check_secure_val(username))
 # [END Permalink post page]
+
+
+# [START Edit post page]
+class EditPost(BaseHandler):
+    """
+    Renders the permalink/edit page with the blogpost content
+    for the user to edit.
+    If a bad url, sends to the 404 page.
+    """
+
+    def get(self, post_id):
+        username = self.request.cookies.get('name')
+
+        key = ndb.Key('Blogposts', int(post_id), parent=blog_key())
+        post = key.get()
+
+        if not post:
+            self.error(404)
+            return
+
+        self.render("editpost.html", post=post,
+                    username=check_secure_val(username))
+
+    def post(self, post_id, title="", blogPost="", error=""):
+        """
+        If submission is valid, adds to db and redirects to permalink page.
+        If invalid, displays error message, and renders same form."""
+
+        title = self.request.get("title")
+        blogPost = self.request.get("blogPost")
+
+        if title and blogPost:
+
+            blogPost_key = ndb.Key(
+                'Blogposts', int(post_id), parent=blog_key())
+            bp = blogPost_key.get()
+            bp.title = title
+            bp.blogPost = blogPost
+            bp.put()
+
+            self.redirect('/%s' % str(bp.key.integer_id()))
+        else:
+            error = "Please submit both a title and a blogpost!"
+            # self.render_newpost(title, blogPost, error)
+            # self.render_editpost(title, blogPost, error)
+            # self.render_post(title, blogPost, error)
+            self.render("editpost.html", title=title,
+                        blogPost=blogPost, error=error)
+            # self.redirect("/EditPost", title=title,
+            #               blogPost=blogPost, error=error)
+# [END Edit post page]
 
 
 # [START Sign-up]
