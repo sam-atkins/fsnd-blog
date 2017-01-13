@@ -114,8 +114,10 @@ class NewPost(BaseHandler):
             bp.put()
             self.redirect('/%s' % str(bp.key.integer_id()))
         else:
+            username = self.request.cookies.get('name')
             error = "Please submit both a title and a blogpost!"
-            self.render_newpost(title, blogPost, error)
+            self.render("newpost.html", username=check_secure_val(username),
+                        title=title, blogPost=blogPost, error=error)
 # [END New Post]
 
 
@@ -178,14 +180,10 @@ class EditPost(BaseHandler):
 
             self.redirect('/%s' % str(bp.key.integer_id()))
         else:
+            username = self.request.cookies.get('name')
             error = "Please submit both a title and a blogpost!"
-            # self.render_newpost(title, blogPost, error)
-            # self.render_editpost(title, blogPost, error)
-            # self.render_post(title, blogPost, error)
-            self.render("editpost.html", title=title,
-                        blogPost=blogPost, error=error)
-            # self.redirect("/EditPost", title=title,
-            #               blogPost=blogPost, error=error)
+            self.render("newpost.html", username=check_secure_val(username),
+                        title=title, blogPost=blogPost, error=error)
 # [END Edit post page]
 
 
