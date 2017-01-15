@@ -7,15 +7,16 @@ from hpw import *
 class Author(ndb.Model):
     """ sub model for representing an author"""
 
-    author = ndb.StringProperty(indexed=False)
+    author = ndb.StringProperty(required=True)
 # [END Author]
 
 
 # [START GQL Blogposts datastore & entity types]
 class Blogposts(ndb.Model):
     """
-    Enables adding to the App Engine database,
-    and specifies the entity data types.
+    Adds blogposts (title, blogPost content, author, created and last
+    modified) entity data types to the App Engine database.
+    The model class specifies the entity data types.
     (required=True) - constraint enforces posts to database
     must have this value.
     email value - optional so no required=True statement;
