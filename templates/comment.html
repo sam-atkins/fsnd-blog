@@ -1,0 +1,42 @@
+{% extends "base.html" %} 
+
+{% block content %}
+
+{% if username %}
+
+<div class="post">
+    <div class="blog-head">
+        <div class="blog-title">Title: {{post.title}}
+        </div>
+        <div class="blog-created">Created: {{post.created.strftime("%d %b %Y")}}
+        </div>
+        <div class="blog-authored">Author: {{author}}
+        </div>
+    </div>
+    <div class="blog-content">
+        {{post.blogPost}}
+    </div>
+</div>
+
+<form method="post">
+    <label>
+        <div>What is your comment {{username}}?</div>
+        <textarea name="blogPost" cols="30" rows="10"></textarea>
+
+{#         <textarea name="blogPost" cols="30" rows="10">{{post.blogPost}}</textarea> #}
+    
+    </label>
+    <div class="error">
+        {{error}}
+    </div>
+    <button type="submit">Post</button>
+</form> 
+
+{% else %}
+
+Please <a href="/signup">sign-up</a> or 
+<a href="/login">login</a> to comment.
+
+{% endif %}
+
+{% endblock content %}

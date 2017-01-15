@@ -265,6 +265,25 @@ class DeletePost(BaseHandler):
 # [END Delete post page]
 
 
+# [START Comment]
+class Comment(BaseHandler):
+    """Adds comments to a permalink blogpost"""
+
+    def get(self, post_id):
+        username = self.request.cookies.get('name')
+
+        key = ndb.Key('Blogposts', int(post_id), parent=blog_key())
+        post = key.get()
+
+        if not post:
+            self.error(404)
+            return
+
+        self.render("comment.html", post=post,
+                    username=check_secure_val(username))
+# [END Comment]
+
+
 # [START Sign-up]
 class SignUp(BaseHandler):
     """Manages user signup, including error handling if form is not
