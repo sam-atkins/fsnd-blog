@@ -244,16 +244,24 @@ class DeletePost(BaseHandler):
         If user hits delete button, post is deleted and returned to home page.
         """
 
-        title = self.request.get("title")
-        blogPost = self.request.get("blogPost")
+        # known bug with the code below
+        cancel = self.request.get('cancel')
+        delete = self.request.get('delete')
 
-        blogPost_key = ndb.Key(
-            'Blogposts', int(post_id), parent=blog_key())
-        bp = blogPost_key.get()
-        bp.title = title
-        bp.blogPost = blogPost
-        bp.key.delete()
-        self.redirect('/')
+        if cancel:
+            self.redirect('/PostPage')
+
+        if delete:
+
+            title = self.request.get("title")
+            blogPost = self.request.get("blogPost")
+            blogPost_key = ndb.Key(
+                'Blogposts', int(post_id), parent=blog_key())
+            bp = blogPost_key.get()
+            bp.title = title
+            bp.blogPost = blogPost
+            bp.key.delete()
+            self.redirect('/')
 # [END Delete post page]
 
 
