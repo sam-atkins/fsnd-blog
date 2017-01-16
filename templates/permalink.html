@@ -21,6 +21,8 @@
             <button>Comment <i class="fa fa-comment" aria-hidden="true"></i></button>
         </form>
         
+        {% if username == post.author %}
+            
         <form action="/edit/{{post.key.integer_id()}}">
             <button type="submit">Edit <i class="fa fa-pencil" aria-hidden="true"></i></button>
         </form>
@@ -28,6 +30,10 @@
         <form action="/delete/{{post.key.integer_id()}}">
             <button type="submit">Delete <i class="fa fa-trash-o" aria-hidden="true"></i></button>
         </form>
+        
+        {% else %}
+
+        {% endif %}
     
     </div>
 </div>

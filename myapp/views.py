@@ -115,12 +115,6 @@ class NewPost(BaseHandler):
             bp = Blogposts(parent=blog_key(), title=title,
                            blogPost=blogPost, author=check_secure_val(author))
 
-            # broken down for testing; refactor
-            # bp = Blogposts(parent=blog_key())
-            # bp.title = title
-            # bp.blogPost = blogPost
-            # bp.author = check_secure_val(author)
-
             bp.put()
 
             self.redirect('/%s' % str(bp.key.integer_id()))

@@ -2,8 +2,9 @@
 
 {% block content %}
 
-<form method="post">
+{% if username == post.author %}
 
+<div>
     <div class="blog-head">
         <div class="blog-title">Title: {{post.title}}
         </div>
@@ -14,15 +15,23 @@
         {{post.blogPost}}
     </div>
 
-    <div>
+    <form>
         <p>Are you sure you want to delete this post?</p>
 
-        <button type="submit" name="delete">Delete <i class="fa fa-trash-o" aria-hidden="true"></i></button>
+        <button method="post" type="submit" name="delete">Delete <i class="fa fa-trash-o" aria-hidden="true"></i></button>
 
-        <button type="reset" name="cancel">Cancel </button>
+        <button action="/PostPage" type="submit" name="cancel">Cancel</button>
+    </form>
 
-    </div>
+    
+{% else %}
 
-</form>
+<div class="no__access">
+    <p>Only authors may delete their own posts. Click here to go <a href="/">home</a>.</p>
+</div>
+
+{% endif %}
+
+</div>
 
 {% endblock content %}
