@@ -57,8 +57,9 @@ def render_post(response, Blogposts):
 # [START db keys for blogs and user groups]
 def blog_key(name='default'):
     """Defines the key for the datastore entity i.e. data objects"""
-    # return db.Key.from_path('blogs', name)
+
     return ndb.Key('blogs', name)
+# [END db keys for blogs and user groups]
 
 
 # Enables user-groups
@@ -121,8 +122,7 @@ class NewPost(BaseHandler):
         else:
             error = "Please submit both a title and a blogpost!"
             self.render("newpost.html", username=check_secure_val(
-                username), title=title, blogPost=blogPost,
-                author=author, error=error)
+                username), title=title, blogPost=blogPost, error=error)
 # [END New Post]
 
 
@@ -257,6 +257,47 @@ class Comment(BaseHandler):
 
         self.render("comment.html", post=post,
                     username=check_secure_val(username))
+
+    def post(self, post_id):
+        """
+        If comment submission is valid, adds to db and redirects to
+        permalink page.
+        If invalid, displays error message, and renders same form.
+        """
+
+        # info for redirect to permalink page
+        # refactor using Friendly URL routing in webapp2
+        key = ndb.Key('Blogposts', int(post_id), parent=blog_key())
+        post = key.get()
+
+        username = self.request.cookies.get('name')
+        comment = self.request.get("comment")
+        c = self.request.cookies.get('name')
+        commentator = check_secure_val(c)
+
+        if comment != "":
+
+            # 1 - blogpost key is the post_id of blogpost
+            blogpost_key = int(post_id)
+
+            # 2 - create Comment instance and assign comment data types
+            c = Comments(blogpost_key=blogpost_key, comment=comment,
+                         commentator=commentator)
+
+            # 3 - put comment types to ndb
+            c.put()
+
+            if not post:
+                self.error(404)
+                return
+
+            self.render("permalink.html", post=post, key=key,
+                        username=check_secure_val(username))
+
+        else:
+            error = "Please submit a comment!"
+            self.render("comment.html", post=post, error=error,
+                        username=check_secure_val(username))
 # [END Comment]
 
 

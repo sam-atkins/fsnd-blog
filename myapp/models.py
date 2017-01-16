@@ -25,6 +25,20 @@ class Blogposts(ndb.Model):
 # [END GQL datastore & entity types]
 
 
+# [START Comments Model]
+class Comments(ndb.Model):
+    """
+    Model for representing blogpost comments, linked to the Blogpost
+    Model via the post_id of the blogpost.
+    """
+
+    blogpost_key = ndb.IntegerProperty(required=True)
+    comment = ndb.TextProperty(required=True)
+    commentator = ndb.StringProperty(required=True)
+    comment_date = ndb.DateTimeProperty(auto_now_add=True)
+# [END Comments Model]
+
+
 # [START GQL User datastore & entity types]
 class User(ndb.Model):
     name = ndb.StringProperty(required=True)
