@@ -7,7 +7,6 @@ from hcookie import *
 from hpw import *
 from validform import *
 from models import *
-from authorname import get_author
 # [END imports]
 
 
@@ -109,38 +108,27 @@ class NewPost(BaseHandler):
 
         title = self.request.get("title")
         blogPost = self.request.get("blogPost")
-        a = self.request.cookies.get('name')
-        # author = check_secure_val(a)
+        author = self.request.cookies.get('name')
 
         if title and blogPost:
 
-            # author of blogposts: create instance of Author model
-            # define instance of Author with the string name, use
-            # this instance to save the blogpost
-
-            # todo:
-            # this puts a new author even if they already exist
-            # needs logic/query, if author already exists move on
-            # store as hashed usernames to decrease duplications
-            author = Author(author=a)
-            author.put()
-
-            # bp = Blogposts(parent=blog_key(), title=title,
-            #                blogPost=blogPost, author=a)
+            bp = Blogposts(parent=blog_key(), title=title,
+                           blogPost=blogPost, author=check_secure_val(author))
 
             # broken down for testing; refactor
-            bp = Blogposts(parent=blog_key())
-            bp.title = title
-            bp.blogPost = blogPost
-            bp.author = author
+            # bp = Blogposts(parent=blog_key())
+            # bp.title = title
+            # bp.blogPost = blogPost
+            # bp.author = check_secure_val(author)
 
             bp.put()
 
             self.redirect('/%s' % str(bp.key.integer_id()))
         else:
             error = "Please submit both a title and a blogpost!"
-            self.render("newpost.html", username=check_secure_val(username),
-                        title=title, blogPost=blogPost, error=error)
+            self.render("newpost.html", username=check_secure_val(
+                username), title=title, blogPost=blogPost,
+                author=author, error=error)
 # [END New Post]
 
 
@@ -154,17 +142,11 @@ class PostPage(BaseHandler):
         key = ndb.Key('Blogposts', int(post_id), parent=blog_key())
         post = key.get()
 
-        # this query returns: []
-        author = Author.query(ancestor=ndb.Key(
-            Blogposts, int(post_id), parent=blog_key())).fetch()
-
-        # a = get_author(author)
-
         if not post:
             self.error(404)
             return
 
-        self.render("permalink.html", post=post, key=key, author=author,
+        self.render("permalink.html", post=post, key=key,
                     username=check_secure_val(username))
 # [END Permalink post page]
 
