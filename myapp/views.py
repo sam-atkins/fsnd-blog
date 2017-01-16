@@ -145,6 +145,31 @@ class PostPage(BaseHandler):
 
         self.render("permalink.html", post=post, key=key, comments=comments,
                     username=check_secure_val(username))
+
+    # def post(self, post_id):
+        """
+        If edit is valid, adds edited post to db and redirects back to
+        permalink page.
+        If invalid, displays error message, and renders same form.
+        """
+
+        # title = self.request.get("title")
+        # blogPost = self.request.get("blogPost")
+
+        # like_count = 0
+        # add query to sum (or return a list) of Likes.like_count
+        # like_count =+ like_query
+
+        # 1 if author, provide error message
+
+        # 2 if u -1, else +1
+        # u = Likes.by_user(self.username)
+        # if u:
+        # -1 ie remove ndb
+        # self.render()
+        # else:
+        # +1 ie add new to ndb
+        # self.render()
 # [END Permalink post page]
 
 

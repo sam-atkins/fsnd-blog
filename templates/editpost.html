@@ -17,6 +17,9 @@
         {{error}}
     </div>
     <button type="submit">Post</button>
+    <form action="{{post.key.integer_id()}}">
+        <button type="submit">Cancel</button>
+    </form>
 </form> 
 
 {% else %}

@@ -32,27 +32,25 @@
     {% endfor %}
 
     <div class="blog-buttons">
-        <button>Like <i class="fa fa-heart" aria-hidden="true"></i></button>
-
-        <form action="/comment/{{post.key.integer_id()}}">
-            <button>Comment <i class="fa fa-comment" aria-hidden="true"></i></button>
-        </form>
         
+        <a href="/comment/{{post.key.integer_id()}}">Comment <i class="fa fa-comment" aria-hidden="true"></i></a>
+        
+        <form method="post" name="like">
+            <button>Like <i class="fa fa-heart" aria-hidden="true"></i></button>
+        </form>
+
         {% if username == post.author %}
             
-        <form action="/edit/{{post.key.integer_id()}}">
-            <button type="submit">Edit <i class="fa fa-pencil" aria-hidden="true"></i></button>
-        </form>
+            <a href="/edit/{{post.key.integer_id()}}">Edit <i class="fa fa-pencil" aria-hidden="true"></i></a>
         
-        <form action="/delete/{{post.key.integer_id()}}">
-            <button type="submit">Delete <i class="fa fa-trash-o" aria-hidden="true"></i></button>
-        </form>
+            <a href="/delete/{{post.key.integer_id()}}">Delete <i class="fa fa-trash-o" aria-hidden="true"></i></a>
         
-        {% else %}
+{#         {% else %} #}
 
         {% endif %}
     
     </div>
+
 </div>
 
 {% endblock content %}

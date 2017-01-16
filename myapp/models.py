@@ -39,6 +39,21 @@ class Comments(ndb.Model):
 # [END Comments Model]
 
 
+# [START Likes data Model]
+class Likes(ndb.Model):
+    blogpost_key = ndb.IntegerProperty(required=True)
+    like_count = ndb.IntegerProperty(required=True)
+    username = ndb.StringProperty(required=True)
+
+    @classmethod
+    def by_user(cls, username):
+        u = Likes.query().filter(ndb.GenericProperty(
+            'username') == username).get()
+        return u
+
+# [END Likes data Model]
+
+
 # [START GQL User datastore & entity types]
 class User(ndb.Model):
     name = ndb.StringProperty(required=True)
