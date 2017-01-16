@@ -136,11 +136,14 @@ class PostPage(BaseHandler):
         key = ndb.Key('Blogposts', int(post_id), parent=blog_key())
         post = key.get()
 
+        comments = Comments.query(Comments.blogpost_key == int(
+            post_id)).order(Comments.comment_date)
+
         if not post:
             self.error(404)
             return
 
-        self.render("permalink.html", post=post, key=key,
+        self.render("permalink.html", post=post, key=key, comments=comments,
                     username=check_secure_val(username))
 # [END Permalink post page]
 
@@ -268,6 +271,9 @@ class Comment(BaseHandler):
         # info for redirect to permalink page
         # refactor using Friendly URL routing in webapp2
         key = ndb.Key('Blogposts', int(post_id), parent=blog_key())
+        blogPost_key = ndb.Key(
+            'Blogposts', int(post_id), parent=blog_key())
+        bp = blogPost_key.get()
         post = key.get()
 
         username = self.request.cookies.get('name')
@@ -291,8 +297,7 @@ class Comment(BaseHandler):
                 self.error(404)
                 return
 
-            self.render("permalink.html", post=post, key=key,
-                        username=check_secure_val(username))
+            self.redirect('/%s' % str(bp.key.integer_id()))
 
         else:
             error = "Please submit a comment!"

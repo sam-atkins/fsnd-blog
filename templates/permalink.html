@@ -14,6 +14,23 @@
     <div class="blog-content">
         {{post.blogPost}}
     </div>
+
+    <div class="comments__wrapper">
+        <div class="comments__header">
+            <h3>Comments</h3>
+        </div>
+    
+    {% for comment in comments %}
+        <div class="comment__commentator">
+            <h4>Comment by: {{comment.commentator}}</h4>
+            <div class="comment__created">Commented on: {{comment.comment_date.strftime("%d %b %Y")}}
+            </div>
+            <p class="comment__text">{{comment.comment}}</p>
+        </div>
+    </div>
+        
+    {% endfor %}
+
     <div class="blog-buttons">
         <button>Like <i class="fa fa-heart" aria-hidden="true"></i></button>
 

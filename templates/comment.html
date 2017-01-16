@@ -10,7 +10,7 @@
         </div>
         <div class="blog-created">Created: {{post.created.strftime("%d %b %Y")}}
         </div>
-        <div class="blog-authored">Author: {{author}}
+        <div class="blog-authored">Author: {{post.author}}
         </div>
     </div>
     <div class="blog-content">
@@ -21,10 +21,7 @@
 <form method="post">
     <label>
         <div>What is your comment {{username}}?</div>
-        <textarea name="blogPost" cols="30" rows="10"></textarea>
-
-{#         <textarea name="blogPost" cols="30" rows="10">{{post.blogPost}}</textarea> #}
-    
+        <textarea name="comment" cols="30" rows="10"></textarea>
     </label>
     <div class="error">
         {{error}}
