@@ -22,6 +22,12 @@ class Blogposts(ndb.Model):
     created = ndb.DateTimeProperty(auto_now_add=True)
     last_modified = ndb.DateTimeProperty(auto_now=True)
     author = ndb.StringProperty(required=True)
+
+    @classmethod
+    def _check_author(cls, blogpost_entity, username):
+        q = Blogposts.query().filter(
+            ndb.GenericProperty('author') == username).get()
+        return q
 # [END GQL datastore & entity types]
 
 
@@ -46,11 +52,39 @@ class Likes(ndb.Model):
     username = ndb.StringProperty(required=True)
 
     @classmethod
-    def by_user(cls, username):
-        u = Likes.query().filter(ndb.GenericProperty(
-            'username') == username).get()
-        return u
+    def _check_like(cls, post_id, username):
+        """
+        Checks if a blogpost (via the post_id key) already
+        has a like by the user"""
+        # testing required
+        query = Likes.query(Likes.blogpost_key == post_id,
+                            ndb.AND(Likes.username == username))
+        return query
 
+        # comments = Comments.query(Comments.blogpost_key == int(
+        #     post_id)).order(Comments.comment_date)
+        # query = Likes.query().filter(ndb.GenericProperty(
+        #     'username') == username).get()
+        # return query
+
+    @classmethod
+    def _add_like(cls, blogpost_key, username):
+        """Used to add or remove a like by a user against a blogpost (key)"""
+        like_count = 1
+        return Likes(blogpost_key=blogpost_key, like_count=like_count,
+                     username=username)
+
+    @classmethod
+    def _find_like_key(cls, post_id):
+        like_id = Likes.query(Likes.blogpost_key == post_id)
+        return like_id.key.get()
+
+    @classmethod
+    def _subtract_like(cls, blogpost_key, username):
+        """Used to add or remove a like by a user against a blogpost (key)"""
+        like_count = 1
+        return Likes(blogpost_key=blogpost_key, like_count=like_count,
+                     username=username)
 # [END Likes data Model]
 
 

@@ -139,37 +139,55 @@ class PostPage(BaseHandler):
         comments = Comments.query(Comments.blogpost_key == int(
             post_id)).order(Comments.comment_date)
 
+        # amend to return only like_count=1
+        likes = Likes.query(Likes.blogpost_key == int(
+            post_id)).get()
+
         if not post:
             self.error(404)
             return
 
         self.render("permalink.html", post=post, key=key, comments=comments,
-                    username=check_secure_val(username))
+                    likes=likes, username=check_secure_val(username))
 
-    # def post(self, post_id):
+    def post(self, post_id):
         """
-        If edit is valid, adds edited post to db and redirects back to
-        permalink page.
-        If invalid, displays error message, and renders same form.
+        like and unlike blogposts
         """
 
-        # title = self.request.get("title")
-        # blogPost = self.request.get("blogPost")
+        self.key = ndb.Key('Blogposts', int(post_id), parent=blog_key())
+        self.post = self.key.get()
 
-        # like_count = 0
-        # add query to sum (or return a list) of Likes.like_count
-        # like_count =+ like_query
+        comments = Comments.query(Comments.blogpost_key == int(
+            post_id)).order(Comments.comment_date)
 
-        # 1 if author, provide error message
+        # query is incorrect
+        likes = Likes.query(Likes.blogpost_key == int(
+            post_id)).get()
 
-        # 2 if u -1, else +1
-        # u = Likes.by_user(self.username)
-        # if u:
-        # -1 ie remove ndb
-        # self.render()
-        # else:
-        # +1 ie add new to ndb
-        # self.render()
+        # self.blogpost_key = post_id
+        self.post_id = int(post_id)
+        self.username = self.request.cookies.get('name')
+        error = "Can't like your own logpost mate, that's so vain!"
+
+        # 2 if author, provide error message
+        self.blogpost_entity = Blogposts.get_by_id(post_id, parent=blog_key())
+        u = Blogposts._check_author(self.blogpost_entity, self.username)
+
+        if u:
+            error = "Can't like your own logpost mate, that's so vain!"
+            self.render("permalink.html", post=self.post, key=self.key,
+                        comments=comments, likes=likes,
+                        username=check_secure_val(self.username),
+                        error_likes=error)
+
+        else:
+            add_like = Likes._add_like(
+                self.post_id, self.username)
+            add_like.put()
+            self.render("permalink.html", post=self.post, key=self.key,
+                        comments=comments, likes=likes, error_likes=error,
+                        username=check_secure_val(self.username))
 # [END Permalink post page]
 
 
@@ -250,12 +268,14 @@ class DeletePost(BaseHandler):
 
         title = self.request.get("title")
         blogPost = self.request.get("blogPost")
+        author = self.request.cookies.get('name')
 
         blogPost_key = ndb.Key(
             'Blogposts', int(post_id), parent=blog_key())
         bp = blogPost_key.get()
         bp.title = title
         bp.blogPost = blogPost
+        bp.author = check_secure_val(author)
         bp.key.delete()
         self.redirect('/')
 # [END Delete post page]

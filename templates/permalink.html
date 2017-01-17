@@ -32,20 +32,52 @@
     {% endfor %}
 
     <div class="blog-buttons">
+
+        {# Author section #}
+        {% if username == post.author %}
         
         <a href="/comment/{{post.key.integer_id()}}">Comment <i class="fa fa-comment" aria-hidden="true"></i></a>
         
+        <div class="test">
+        <p>this is a test to see what value the like query returns:</p>
+        <br>
+        <p>{{likes}}</p>
+        <br>
+        <p>Filter: {{likes.like_count}}</p>
+        </div>
+        </div>
+
         <form method="post" name="like">
             <button>Like <i class="fa fa-heart" aria-hidden="true"></i></button>
+            <div class="error">{{error_likes}}</div>
         </form>
 
-        {% if username == post.author %}
             
             <a href="/edit/{{post.key.integer_id()}}">Edit <i class="fa fa-pencil" aria-hidden="true"></i></a>
         
             <a href="/delete/{{post.key.integer_id()}}">Delete <i class="fa fa-trash-o" aria-hidden="true"></i></a>
         
-{#         {% else %} #}
+        {# Logged in user section #}
+        {% elif username != post.author %}
+
+        <a href="/comment/{{post.key.integer_id()}}">Comment <i class="fa fa-comment" aria-hidden="true"></i></a>
+        
+        <div class="test">
+        <p>this is a test to see what value the like query returns:</p>
+        <br>
+        <p>{{likes}}</p>
+        <br>
+        <p>Filter: {{likes.like_count}}</p>
+        <br>
+        <p>{{check_like}}</p>
+
+
+        <form method="post" name="like">
+            <button>Like <i class="fa fa-heart" aria-hidden="true"></i></button>
+        </form>
+
+        {# visitor section #}
+        {% else %}
 
         {% endif %}
     
