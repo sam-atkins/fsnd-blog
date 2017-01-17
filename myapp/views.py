@@ -165,28 +165,27 @@ class PostPage(BaseHandler):
         likes = Likes.query(Likes.blogpost_key == int(
             post_id)).get()
 
-        # self.blogpost_key = post_id
         self.post_id = int(post_id)
         self.username = self.request.cookies.get('name')
-        error = "Can't like your own logpost mate, that's so vain!"
+        self.blogPost_key = ndb.Key(
+            'Blogposts', int(post_id), parent=blog_key())
+        self.bp = self.blogPost_key.get()
 
         # 2 if author, provide error message
-        self.blogpost_entity = Blogposts.get_by_id(post_id, parent=blog_key())
-        u = Blogposts._check_author(self.blogpost_entity, self.username)
-
-        if u:
-            error = "Can't like your own logpost mate, that's so vain!"
+        if self.bp.author == check_secure_val(self.username):
+            error_likes = "Sorry, you can't like your own blogpost!"
             self.render("permalink.html", post=self.post, key=self.key,
                         comments=comments, likes=likes,
                         username=check_secure_val(self.username),
-                        error_likes=error)
+                        error_likes=error_likes)
 
         else:
             add_like = Likes._add_like(
                 self.post_id, self.username)
             add_like.put()
+            test_error = "test: else statement add +1 to likes and display this test msg"
             self.render("permalink.html", post=self.post, key=self.key,
-                        comments=comments, likes=likes, error_likes=error,
+                        comments=comments, likes=likes, test_error=test_error,
                         username=check_secure_val(self.username))
 # [END Permalink post page]
 

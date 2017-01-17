@@ -22,12 +22,6 @@ class Blogposts(ndb.Model):
     created = ndb.DateTimeProperty(auto_now_add=True)
     last_modified = ndb.DateTimeProperty(auto_now=True)
     author = ndb.StringProperty(required=True)
-
-    @classmethod
-    def _check_author(cls, blogpost_entity, username):
-        q = Blogposts.query().filter(
-            ndb.GenericProperty('author') == username).get()
-        return q
 # [END GQL datastore & entity types]
 
 
