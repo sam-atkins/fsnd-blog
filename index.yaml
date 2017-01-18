@@ -12,16 +12,10 @@ indexes:
 
 - kind: Comments
   properties:
-  - name: blogpost_key
+  - name: blogpost_id
   - name: comment_date
-
-- kind: Comments
-  properties:
-  - name: blogpost_key
-  - name: comment_date
-    direction: desc
 
 - kind: Likes
   properties:
-  - name: blogpost_key
+  - name: blogpost_id
   - name: like_count
