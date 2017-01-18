@@ -363,6 +363,32 @@ class Comment(BaseHandler):
 # [END Comment]
 
 
+# [START Edit comment]
+class EditComment(BaseHandler):
+    """
+    Allows a commentator to edit their comment
+    """
+
+    def get(self, comment_id):
+
+        u = self.request.cookies.get('name')
+        self.username = check_secure_val(u)
+
+        key = ndb.Key('Comments', int(comment_id), parent=blog_key())
+
+        comment = key.get()
+
+        self.render("ediitcomment.html", comment=comment,
+                    username=check_secure_val(self.username))
+
+    # def post(self, post_id):
+
+        # delete
+        # like.key.delete()
+
+# [END Edit Comment]
+
+
 # [START Sign-up]
 class SignUp(BaseHandler):
     """Manages user signup, including error handling if form is not
