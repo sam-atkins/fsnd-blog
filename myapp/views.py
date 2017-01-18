@@ -136,11 +136,11 @@ class PostPage(BaseHandler):
         key = ndb.Key('Blogposts', int(post_id), parent=blog_key())
         post = key.get()
 
-        comments = Comments.query(Comments.blogpost_key == int(
+        comments = Comments.query(Comments.blogpost_id == int(
             post_id)).order(Comments.comment_date)
 
         # like counter query for permalink page
-        likes = Likes.query().filter(Likes.blogpost_key == int(post_id)).fetch(
+        likes = Likes.query().filter(Likes.blogpost_id == int(post_id)).fetch(
             projection=[Likes.like_count])
 
         if not post:
@@ -158,11 +158,11 @@ class PostPage(BaseHandler):
         key = ndb.Key('Blogposts', int(post_id), parent=blog_key())
         post = key.get()
 
-        comments = Comments.query(Comments.blogpost_key == int(
+        comments = Comments.query(Comments.blogpost_id == int(
             post_id)).order(Comments.comment_date)
 
         # like counter query for permalink page
-        likes = Likes.query().filter(Likes.blogpost_key == int(post_id)).fetch(
+        likes = Likes.query().filter(Likes.blogpost_id == int(post_id)).fetch(
             projection=[Likes.like_count])
 
         post_id = int(post_id)
@@ -341,10 +341,10 @@ class Comment(BaseHandler):
         if comment != "":
 
             # 1 - blogpost key is the post_id of blogpost
-            blogpost_key = int(post_id)
+            blogpost_id = int(post_id)
 
             # 2 - create Comment instance and assign comment data types
-            c = Comments(blogpost_key=blogpost_key, comment=comment,
+            c = Comments(blogpost_id=blogpost_id, comment=comment,
                          commentator=commentator)
 
             # 3 - put comment types to ndb

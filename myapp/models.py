@@ -32,7 +32,7 @@ class Comments(ndb.Model):
     Model via the post_id of the blogpost.
     """
 
-    blogpost_key = ndb.IntegerProperty(required=True)
+    blogpost_id = ndb.IntegerProperty(required=True)
     comment = ndb.TextProperty(required=True)
     commentator = ndb.StringProperty(required=True)
     comment_date = ndb.DateTimeProperty(auto_now_add=True)
@@ -41,7 +41,7 @@ class Comments(ndb.Model):
 
 # [START Likes data Model]
 class Likes(ndb.Model):
-    blogpost_key = ndb.IntegerProperty(required=True)
+    blogpost_id = ndb.IntegerProperty(required=True)
     like_count = ndb.IntegerProperty(required=True)
     username = ndb.StringProperty(required=True)
 
@@ -51,17 +51,17 @@ class Likes(ndb.Model):
         Checks if a blogpost (via the post_id key) already
         has a like by the user"""
 
-        q = Likes.query().filter(Likes.blogpost_key == post_id).filter(
+        q = Likes.query().filter(Likes.blogpost_id == post_id).filter(
             Likes.username == username).get()
         if q:
             return True
 
     @classmethod
-    def _add_like(cls, blogpost_key, username):
+    def _add_like(cls, blogpost_id, username):
         """Used to add or remove a like by a user against a blogpost (key)"""
 
         like_count = 1
-        return Likes(blogpost_key=blogpost_key, like_count=like_count,
+        return Likes(blogpost_id=blogpost_id, like_count=like_count,
                      username=username)
 
     @classmethod
@@ -69,16 +69,16 @@ class Likes(ndb.Model):
         """returns the id of the blogpost's like which
         the user already liked previously"""
 
-        query = Likes.query().filter(Likes.blogpost_key == post_id).filter(
+        query = Likes.query().filter(Likes.blogpost_id == post_id).filter(
             Likes.username == username)
         like_id = query.get()
         return like_id
 
     @classmethod
-    def _subtract_like(cls, blogpost_key, username):
+    def _subtract_like(cls, blogpost_id, username):
         """Used to add or remove a like by a user against a blogpost (key)"""
         like_count = 1
-        return Likes(blogpost_key=blogpost_key, like_count=like_count,
+        return Likes(blogpost_id=blogpost_id, like_count=like_count,
                      username=username)
 # [END Likes data Model]
 
