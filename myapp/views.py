@@ -326,7 +326,6 @@ class Comment(BaseHandler):
         """
 
         # info for redirect to permalink page
-        # refactor using Friendly URL routing in webapp2
         key = ndb.Key('Blogposts', int(post_id), parent=blog_key())
         blogPost_key = ndb.Key(
             'Blogposts', int(post_id), parent=blog_key())
@@ -369,23 +368,37 @@ class EditComment(BaseHandler):
     Allows a commentator to edit their comment
     """
 
-    def get(self, comment_id):
+    def get(self, comments_id):
 
         u = self.request.cookies.get('name')
         self.username = check_secure_val(u)
 
-        key = ndb.Key('Comments', int(comment_id), parent=blog_key())
-
+        # get key for comment
+        key = ndb.Key('Comments', int(comments_id), parent=blog_key())
         comment = key.get()
 
-        self.render("ediitcomment.html", comment=comment,
-                    username=check_secure_val(self.username))
+        self.render("editcomment.html", comment=comment,
+                    username=self.username)
 
-    # def post(self, post_id):
+    def post(self, comments_id):
 
-        # delete
-        # like.key.delete()
+        username = self.request.cookies.get('name')
+        comment = self.request.get("comment")
 
+        # get key for comment
+        key = ndb.Key('Comments', int(comments_id), parent=blog_key())
+        comment = key.get()
+
+        if comment != "":
+            comment.comment = comment
+            comment.put()
+            self.redirect('/')
+            # self.redirect('/%s' % str(bp.key.integer_id()))
+
+        else:
+            error = "Please submit a comment!"
+            self.render("comment.html", error=error,
+                        username=check_secure_val(username))
 # [END Edit Comment]
 
 

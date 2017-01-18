@@ -30,9 +30,18 @@
         <div class="comment_content">
             <p class="comment__text">{{comment.comment}}</p>
         </div>
+
+            {% if username ==  comment.commentator%}
+            <a class="link__button" href="/edit/comment/{{comment.key.integer_id()}}">Edit Comment <i class="fa fa-pencil" aria-hidden="true"></i></a>
+            
+           {#  <a class="link__button" href="/delete/comment/{{comment.key.integer_id()}}">Delete Comment <i class="fa fa-trash-o" aria-hidden="true"></i></a> #}
+
+           {% endif %}
+            
+        {% endfor %}
+        
     </div>
         
-    {% endfor %}
 
 
     {# Author section #}
@@ -46,9 +55,9 @@
 
         <a class="link__button" href="/comment/{{post.key.integer_id()}}">Comment <i class="fa fa-comment" aria-hidden="true"></i></a>
         
-        <a class="link__button" href="/edit/{{post.key.integer_id()}}">Edit <i class="fa fa-pencil" aria-hidden="true"></i></a>
+        <a class="link__button" href="/edit/post/{{post.key.integer_id()}}">Edit <i class="fa fa-pencil" aria-hidden="true"></i></a>
         
-        <a class="link__button" href="/delete/{{post.key.integer_id()}}">Delete <i class="fa fa-trash-o" aria-hidden="true"></i></a>
+        <a class="link__button" href="/delete/post/{{post.key.integer_id()}}">Delete <i class="fa fa-trash-o" aria-hidden="true"></i></a>
         
     </div>
         

@@ -36,6 +36,16 @@ class Comments(ndb.Model):
     comment = ndb.TextProperty(required=True)
     commentator = ndb.StringProperty(required=True)
     comment_date = ndb.DateTimeProperty(auto_now_add=True)
+
+    # @classmethod
+    # def _find_comment_id(cls, post_id, username):
+    #     """returns the id of the blogpost's comment"""
+
+    #     query = Comments.query().filter(
+    #         Comments.blogpost_id == post_id).filter(
+    #         Comments.commentator == username)
+    #     comment_id = query.get()
+    #     return comment_id
 # [END Comments Model]
 
 
