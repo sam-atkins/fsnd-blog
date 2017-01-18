@@ -16,15 +16,18 @@
     </div>
 
     <div class="comments__wrapper">
-        <div class="comments__header">
+        <div class="comments__title">
             <h3>Comments</h3>
         </div>
-    
-    {% for comment in comments %}
-        <div class="comment__commentator">
-            <h4>Comment by: {{comment.commentator}}</h4>
+        {% for comment in comments %}
+
+        <div class="comments__head">
+            <div class="comment__commentator">Comment by: {{comment.commentator}}</div>
             <div class="comment__created">Commented on: {{comment.comment_date.strftime("%d %b %Y")}}
             </div>
+        </div>
+            
+        <div class="comment_content">
             <p class="comment__text">{{comment.comment}}</p>
         </div>
     </div>

@@ -163,6 +163,9 @@ body {
     color: #999;
 }
 
+.blog-authored {
+  font-weight: bold;
+}
 .blog-content {
     margin-top: 5px;
     margin-bottom: 100px;
@@ -170,6 +173,42 @@ body {
 
 .blog__buttons {
   display: flex;
+}
+
+.comments__wrapper {
+  padding-top: 50px;
+}
+
+.comments__head {
+  position: relative;
+  border-bottom: 1px solid #666;
+}
+
+.comments__title {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.comment__commentator {
+  font-weight: bold;
+}
+
+.comment__created {
+  position: absolute;
+  right: 0px;
+  bottom: 0px;
+  color: #999;
+}
+
+.comment__content {
+  margin-top: 5px;
+  margin-bottom: 100px;
+}
+
+.comment__text {
+  border-bottom: 0.5px solid #666;
+  padding-bottom: 20px;
+
 }
 
 .link__button {
