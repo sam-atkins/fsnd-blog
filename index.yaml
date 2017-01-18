@@ -20,3 +20,8 @@ indexes:
   - name: blogpost_key
   - name: comment_date
     direction: desc
+
+- kind: Likes
+  properties:
+  - name: blogpost_key
+  - name: like_count
