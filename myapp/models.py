@@ -50,28 +50,29 @@ class Likes(ndb.Model):
         """
         Checks if a blogpost (via the post_id key) already
         has a like by the user"""
-        # testing required
-        query = Likes.query(Likes.blogpost_key == post_id,
-                            ndb.AND(Likes.username == username))
-        return query
 
-        # comments = Comments.query(Comments.blogpost_key == int(
-        #     post_id)).order(Comments.comment_date)
-        # query = Likes.query().filter(ndb.GenericProperty(
-        #     'username') == username).get()
-        # return query
+        q = Likes.query().filter(Likes.blogpost_key == post_id).filter(
+            Likes.username == username).get()
+        if q:
+            return True
 
     @classmethod
     def _add_like(cls, blogpost_key, username):
         """Used to add or remove a like by a user against a blogpost (key)"""
+
         like_count = 1
         return Likes(blogpost_key=blogpost_key, like_count=like_count,
                      username=username)
 
     @classmethod
-    def _find_like_key(cls, post_id):
-        like_id = Likes.query(Likes.blogpost_key == post_id)
-        return like_id.key.get()
+    def _find_like_key(cls, post_id, username):
+        """returns the id of the blogpost's like which
+        the user already liked previously"""
+
+        query = Likes.query().filter(Likes.blogpost_key == post_id).filter(
+            Likes.username == username)
+        like_id = query.get()
+        return like_id
 
     @classmethod
     def _subtract_like(cls, blogpost_key, username):

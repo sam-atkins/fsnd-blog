@@ -139,9 +139,9 @@ class PostPage(BaseHandler):
         comments = Comments.query(Comments.blogpost_key == int(
             post_id)).order(Comments.comment_date)
 
-        # amend to return only like_count=1
-        likes = Likes.query(Likes.blogpost_key == int(
-            post_id)).get()
+        # like counter query for permalink page
+        likes = Likes.query().filter(Likes.blogpost_key == int(post_id)).fetch(
+            projection=[Likes.like_count])
 
         if not post:
             self.error(404)
@@ -155,18 +155,20 @@ class PostPage(BaseHandler):
         like and unlike blogposts
         """
 
-        self.key = ndb.Key('Blogposts', int(post_id), parent=blog_key())
-        self.post = self.key.get()
+        key = ndb.Key('Blogposts', int(post_id), parent=blog_key())
+        post = key.get()
 
         comments = Comments.query(Comments.blogpost_key == int(
             post_id)).order(Comments.comment_date)
 
-        # query is incorrect
-        likes = Likes.query(Likes.blogpost_key == int(
-            post_id)).get()
+        # like counter query for permalink page
+        likes = Likes.query().filter(Likes.blogpost_key == int(post_id)).fetch(
+            projection=[Likes.like_count])
 
-        self.post_id = int(post_id)
+        post_id = int(post_id)
         self.username = self.request.cookies.get('name')
+
+        # 1 get blogpost entity key
         self.blogPost_key = ndb.Key(
             'Blogposts', int(post_id), parent=blog_key())
         self.bp = self.blogPost_key.get()
@@ -174,19 +176,38 @@ class PostPage(BaseHandler):
         # 2 if author, provide error message
         if self.bp.author == check_secure_val(self.username):
             error_likes = "Sorry, you can't like your own blogpost!"
-            self.render("permalink.html", post=self.post, key=self.key,
+            self.render("permalink.html", post=post, key=key,
                         comments=comments, likes=likes,
                         username=check_secure_val(self.username),
                         error_likes=error_likes)
 
         else:
-            add_like = Likes._add_like(
-                self.post_id, self.username)
-            add_like.put()
-            test_error = "test: else statement add +1 to likes and display this test msg"
-            self.render("permalink.html", post=self.post, key=self.key,
-                        comments=comments, likes=likes, test_error=test_error,
-                        username=check_secure_val(self.username))
+
+            check_like = Likes._check_like(post_id, self.username)
+
+            # 3 if user has already liked the post, delete the like from ndb
+            if check_like:
+
+                # get the id
+                like_id = Likes._find_like_key(post_id, self.username)
+
+                # get the key
+                like = like_id._key.get()
+
+                # delete
+                like.key.delete()
+
+                self.render("permalink.html", post=post, key=key,
+                            comments=comments, likes=likes,
+                            username=check_secure_val(self.username))
+
+            # 4 if user has not yet liked the post, add a like to ndb
+            else:
+                add_like = Likes._add_like(post_id, self.username)
+                add_like.put()
+                self.render("permalink.html", post=post, key=key,
+                            comments=comments, likes=likes,
+                            username=check_secure_val(self.username))
 # [END Permalink post page]
 
 
