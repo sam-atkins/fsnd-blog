@@ -206,7 +206,9 @@ body {
 }
 
 .comment__text {
+  border-bottom: 0.5px solid #666;
   padding-bottom: 20px;
+  margin-bottom: 100px;
 }
 
 .link__button {
@@ -216,7 +218,7 @@ body {
   text-decoration: none; font: menu; color: ButtonText;
   display: inline-block; padding: 2px 8px;
   margin-right: 10px;
-  margin-bottom: 100px;
+  margin-top: 10px;
 }
 
 /* ==========================================================================
