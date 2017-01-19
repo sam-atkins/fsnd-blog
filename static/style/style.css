@@ -163,6 +163,11 @@ body {
     color: #999;
 }
 
+.mainpage__postauthor {
+  margin-top: 20px;
+  font-weight: bold;
+}
+
 .blog-authored {
   font-weight: bold;
 }
