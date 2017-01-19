@@ -12,6 +12,7 @@ This project is part of my **Udacity FullStack NanoDegree**. The scope is to bui
 * User log-in [v2]
 * User log-out [v2]
 * Users can comment on posts [v3]
+* Users can edit/delete their own comments [v3]
 * Users can like/unlike posts [v3]
 * Authors can edit/delete their own posts [v3]
 
@@ -23,8 +24,8 @@ This project is part of my **Udacity FullStack NanoDegree**. The scope is to bui
 
 ### Status
 
-* Version 1 and 2: Live (see demo link below)
-* Version 3: WIP
+* Version 1 and 2: Complete
+* Version 3: Live and submitted for Udacity review (see demo link below)
 
 ### Demo
 Live at [app.spot](https://cubiio-blog.appspot.com/).
@@ -37,6 +38,7 @@ Live at [app.spot](https://cubiio-blog.appspot.com/).
 * In the command line run `$ dev_appserver.py .` (Or run my ohmyzsh alias = `dev`)
 * The app will load in http://localhost:8080
 * To view the local datastore: http://localhost:8000/datastore
+* To deploy, use the command line: `gcloud app deploy`
 
 Prerequisites are: Python (2.7) and Google Cloud SDK. 
 
