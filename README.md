@@ -3,7 +3,9 @@
 ## About this project
 This project is part of my **Udacity FullStack NanoDegree**. The scope is to build a blog that meets the following:
 
-### User Requirements* Front page that lists entries [v1]
+### User Requirements
+
+* Front page that lists entries [v1]
 * Form to submit new entries [v1]
 * Permalink page for entries [v1]
 * User sign-up [v2]
@@ -13,11 +15,15 @@ This project is part of my **Udacity FullStack NanoDegree**. The scope is to bui
 * Users can like/unlike posts [v3]
 * Authors can edit/delete their own posts [v3]
 
-### Build Requirements* Python
+### Build Requirements
+
+* Python
 * Framework: Google App Engine and Datastore
 * Jinja2 templates
 
-### Status* Version 1 and 2: Live (see demo link below)
+### Status
+
+* Version 1 and 2: Live (see demo link below)
 * Version 3: WIP
 
 ### Demo
@@ -28,7 +34,7 @@ Live at [app.spot](https://cubiio-blog.appspot.com/).
 **macOS instructions:**
 
 * `cd` to the project folder e.g. `projects/fsnd-blog`
-* In the command line run `$ dev_appserver.py .` - my ohmyzsh alias = `dev`
+* In the command line run `$ dev_appserver.py .` (Or run my ohmyzsh alias = `dev`)
 * The app will load in http://localhost:8080
 * To view the local datastore: http://localhost:8000/datastore
 
