@@ -374,7 +374,7 @@ class EditComment(BaseHandler):
         self.username = check_secure_val(u)
 
         # get key for comment
-        key = ndb.Key('Comments', int(comments_id), parent=blog_key())
+        key = ndb.Key('Comments', int(comments_id))
         comment = key.get()
 
         self.render("editcomment.html", comment=comment,
@@ -386,14 +386,13 @@ class EditComment(BaseHandler):
         comment = self.request.get("comment")
 
         # get key for comment
-        key = ndb.Key('Comments', int(comments_id), parent=blog_key())
-        comment = key.get()
+        key = ndb.Key('Comments', int(comments_id))
+        c = key.get()
 
         if comment != "":
-            comment.comment = comment
-            comment.put()
+            c.comment = comment
+            c.put()
             self.redirect('/')
-            # self.redirect('/%s' % str(bp.key.integer_id()))
 
         else:
             error = "Please submit a comment!"
