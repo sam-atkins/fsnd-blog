@@ -27,16 +27,17 @@
             </div>
         </div>
             
+            {% if username ==  comment.commentator%}
+            
+            <a class="link__button" href="/edit/comment/{{comment.key.integer_id()}}">Edit Comment <i class="fa fa-pencil" aria-hidden="true"></i></a>
+            
+            <a class="link__button" href="/delete/comment/{{comment.key.integer_id()}}">Delete Comment <i class="fa fa-trash-o" aria-hidden="true"></i></a>
+
+           {% endif %}
         <div class="comment_content">
             <p class="comment__text">{{comment.comment}}</p>
         </div>
 
-            {% if username ==  comment.commentator%}
-            <a class="link__button" href="/edit/comment/{{comment.key.integer_id()}}">Edit Comment <i class="fa fa-pencil" aria-hidden="true"></i></a>
-            
-           {#  <a class="link__button" href="/delete/comment/{{comment.key.integer_id()}}">Delete Comment <i class="fa fa-trash-o" aria-hidden="true"></i></a> #}
-
-           {% endif %}
             
         {% endfor %}
         

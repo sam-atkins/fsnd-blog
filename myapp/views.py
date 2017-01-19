@@ -401,6 +401,42 @@ class EditComment(BaseHandler):
 # [END Edit Comment]
 
 
+# [START Delete comment]
+class DeleteComment(BaseHandler):
+    """
+    Allows a commentator to delete their comment
+    """
+
+    def get(self, comments_id):
+
+        u = self.request.cookies.get('name')
+        self.username = check_secure_val(u)
+
+        # get key for comment
+        key = ndb.Key('Comments', int(comments_id))
+        comment = key.get()
+
+        self.render("deletecomment.html", comment=comment,
+                    username=self.username)
+
+    def post(self, comments_id):
+
+        username = self.request.cookies.get('name')
+        comment = self.request.get("comment")
+
+        # get key for comment
+        key = ndb.Key('Comments', int(comments_id))
+        c = key.get()
+
+        # delete
+        c.comment = comment
+        c.commentator = check_secure_val(username)
+        c.key.delete()
+
+        self.redirect('/')
+# [END Delete Comment]
+
+
 # [START Sign-up]
 class SignUp(BaseHandler):
     """Manages user signup, including error handling if form is not
