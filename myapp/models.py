@@ -8,14 +8,7 @@ class Blogposts(ndb.Model):
     """
     Adds blogposts (title, blogPost content, author, created and last
     modified) entity data types to the App Engine database.
-    The model class specifies the entity data types.
-    (required=True) - constraint enforces posts to database
-    must have this value.
-    email value - optional so no required=True statement;
-    and StringProperty type used as EmailProperty type is
-    mandatory and if used throws an error if no email is entered
-    by the user.
-    """
+    The model class specifies the entity data types."""
 
     title = ndb.StringProperty(required=True)
     blogPost = ndb.TextProperty(required=True)
@@ -41,6 +34,7 @@ class Comments(ndb.Model):
 
 # [START Likes data Model]
 class Likes(ndb.Model):
+    """Model for Likes for a blogpost"""
     blogpost_id = ndb.IntegerProperty(required=True)
     like_count = ndb.IntegerProperty(required=True)
     username = ndb.StringProperty(required=True)
@@ -105,13 +99,6 @@ class User(ndb.Model):
         return User(name=name,
                     pw_hash=pw_hash,
                     email=email)
-
-        # retained for future ref;
-        # see views.py - def users_key(group='default')
-        # return User(parent=users_key(),
-        #             name=name,
-        #             pw_hash=pw_hash,
-        #             email=email)
 
     @classmethod
     def login(cls, name, pw):

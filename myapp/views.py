@@ -62,18 +62,6 @@ def blog_key(name='default'):
 # [END db keys for blogs and user groups]
 
 
-# Enables user-groups
-# def users_key(group='default'):
-    """
-    Solution code from Udacity tutor, retained for future
-    learning/study. It enables user-groups by assigning each user to a group
-    within the datastore
-    """
-
-    # return ndb.Key('users', group)
-# [END db db keys for blogs and user groups]
-
-
 # [START Main Page]
 class MainPage(BaseHandler):
     """Renders the main page with submitted blog posts"""
@@ -215,8 +203,7 @@ class PostPage(BaseHandler):
 class EditPost(BaseHandler):
     """
     Renders the permalink/edit page with the blogpost content
-    for the user to edit.
-    If a bad url, sends to the 404 page.
+    for the user to edit. If a bad url, sends to the 404 page.
     """
 
     def get(self, post_id):
@@ -282,10 +269,6 @@ class DeletePost(BaseHandler):
                     username=check_secure_val(username))
 
     def post(self, post_id):
-        """
-        If user hits delete button, post is deleted and returned to home page.
-        """
-
         title = self.request.get("title")
         blogPost = self.request.get("blogPost")
         author = self.request.cookies.get('name')
@@ -319,12 +302,6 @@ class Comment(BaseHandler):
                     username=check_secure_val(username))
 
     def post(self, post_id):
-        """
-        If comment submission is valid, adds to db and redirects to
-        permalink page.
-        If invalid, displays error message, and renders same form.
-        """
-
         # info for redirect to permalink page
         key = ndb.Key('Blogposts', int(post_id), parent=blog_key())
         blogPost_key = ndb.Key(
@@ -369,7 +346,6 @@ class EditComment(BaseHandler):
     """
 
     def get(self, comments_id):
-
         u = self.request.cookies.get('name')
         self.username = check_secure_val(u)
 
@@ -381,7 +357,6 @@ class EditComment(BaseHandler):
                     username=self.username)
 
     def post(self, comments_id):
-
         username = self.request.cookies.get('name')
         comment = self.request.get("comment")
 
