@@ -461,7 +461,7 @@ class Register(SignUp):
     Inherits from the Signup handler.
     Manages user duplication error if username already exists.
     If username is valid, puts new user details to the datastore,
-    sets a cookie and redirects to the welcome page."""
+    sets a cookie and redirects to the home page."""
 
     def done(self):
         # make sure the user doesn't already exist
@@ -477,28 +477,8 @@ class Register(SignUp):
             self.response.headers.add_header(
                 'Set-Cookie', 'name=%s; Path=/'
                 % str(make_secure_val(self.username)))
-            # test:
-            # self.redirect('/welcome')
             self.redirect('/')
 # [END Register]
-
-
-# [START Welcome]
-class Welcome(BaseHandler):
-    """
-    This is the redirect from a successful signup or login
-    Checks if there is a username and that the username is not blank ie " "
-    If OK, renders welcome.html, and confirms the secure cookie
-    Otherwise, redirects to signup.
-    """
-
-    def get(self):
-        username = self.request.cookies.get('name')
-        if username and username != "":
-            self.render('welcome.html', username=check_secure_val(username))
-        else:
-            self.redirect('/signup')
-# [END Welcome]
 
 
 # [START Login]
@@ -506,7 +486,7 @@ class Login(BaseHandler):
     """
     Manages user login, using the User Model (datastore) and the decorator,
     i.e. the @class method login. If the user's username and password are
-    valid, a cookie is set and the user is redirected to welcome.
+    valid, a cookie is set and the user is redirected to the home page.
     If invalid, the login form is rendered with an error message.
     """
 
@@ -523,8 +503,6 @@ class Login(BaseHandler):
             self.response.headers.add_header(
                 'Set-Cookie', 'name=%s; Path=/'
                 % str(make_secure_val(username)))
-            # test:
-            # self.redirect('/welcome')
             self.redirect('/')
         else:
             msg = 'Invalid login'
