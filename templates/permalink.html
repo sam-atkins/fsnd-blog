@@ -28,7 +28,7 @@
         </div>
             
             {% if username ==  comment.commentator%}
-            
+
             <a class="link__button" href="/edit/comment/{{comment.key.integer_id()}}">Edit Comment <i class="fa fa-pencil" aria-hidden="true"></i></a>
             
             <a class="link__button" href="/delete/comment/{{comment.key.integer_id()}}">Delete Comment <i class="fa fa-trash-o" aria-hidden="true"></i></a>
@@ -51,7 +51,6 @@
         
         <form method="post" name="like">
             <button class="link__button"> {{likes | length }} Likes <i class="fa fa-heart" aria-hidden="true"></i></button>
-            <div class="error">{{error_likes}}</div>
         </form>
 
         <a class="link__button" href="/comment/{{post.key.integer_id()}}">Comment <i class="fa fa-comment" aria-hidden="true"></i></a>
@@ -60,6 +59,9 @@
         
         <a class="link__button" href="/delete/post/{{post.key.integer_id()}}">Delete <i class="fa fa-trash-o" aria-hidden="true"></i></a>
         
+    </div>
+    <div class="error">
+        <div>{{error_likes}}</div>
     </div>
         
     {# Logged in user section #}
