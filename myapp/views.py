@@ -1,12 +1,18 @@
+"""Manages all Page Handlers:
+- for user signup, login and logout
+- for creating, editing and deleting posts
+- for creating, editing and deleting comments
+- for liking (put) and unliking (delete) posts
+"""
+
 # [START imports]
 import os
 import webapp2
 import jinja2
 
-from hcookie import *
-from hpw import *
-from validform import *
-from models import *
+from myapp.hcookie import make_secure_val, check_secure_val
+from myapp.validform import valid_username, valid_password, valid_email
+from myapp.models import *
 # [END imports]
 
 
@@ -17,6 +23,11 @@ jinja_env = jinja2.Environment(loader=jinja2.FileSystemLoader(template_dir),
 
 
 class BaseHandler(webapp2.RequestHandler):
+    """
+    Base Handler used by all Page Handlers.
+    Also, includes functions to set, read and check cookies.
+    """
+
     def write(self, *a, **kw):
         """shortcut to writing 'response.out.write' """
         self.response.out.write(*a, **kw)
@@ -47,7 +58,7 @@ class BaseHandler(webapp2.RequestHandler):
 
 def render_post(response, Blogposts):
     """
-    Solution code from Udacity tutor.
+    Solution code from Udacity tutor. Renders title and content of blogposts.
     """
     response.out.write('<b>' + Blogposts.title + '</b><br>')
     response.out.write(Blogposts.blogPost)
@@ -67,6 +78,8 @@ class MainPage(BaseHandler):
     """Renders the main page with submitted blog posts"""
 
     def get(self):
+        """Renders blogroll with query of latest 10 posts
+        & user login/out or signup"""
         posts = ndb.gql(
             "SELECT * from Blogposts ORDER BY created DESC LIMIT 10")
 
@@ -85,6 +98,7 @@ class NewPost(BaseHandler):
     """Renders the new post page with post entry form"""
 
     def get(self):
+        """Renders form to submit new blogpost"""
         username = self.request.cookies.get('name')
         self.render("newpost.html", title="",
                     blogPost="", error="",
@@ -109,8 +123,8 @@ class NewPost(BaseHandler):
             self.redirect('/%s' % str(bp.key.integer_id()))
         else:
             error = "Please submit both a title and a blogpost!"
-            self.render("newpost.html", username=check_secure_val(
-                username), title=title, blogPost=blogPost, error=error)
+            self.render("newpost.html", title=title,
+                        blogPost=blogPost, error=error)
 # [END New Post]
 
 
@@ -119,6 +133,7 @@ class PostPage(BaseHandler):
     """Renders the permalink page or if a bad url, sends to the 404 page."""
 
     def get(self, post_id):
+        """Renders permalink page, with query for like count"""
         username = self.request.cookies.get('name')
 
         key = ndb.Key('Blogposts', int(post_id), parent=blog_key())
@@ -139,9 +154,7 @@ class PostPage(BaseHandler):
                     likes=likes, username=check_secure_val(username))
 
     def post(self, post_id):
-        """
-        like and unlike blogposts
-        """
+        """Enables like and unlike blogposts"""
 
         key = ndb.Key('Blogposts', int(post_id), parent=blog_key())
         post = key.get()
@@ -204,9 +217,11 @@ class EditPost(BaseHandler):
     """
     Renders the permalink/edit page with the blogpost content
     for the user to edit. If a bad url, sends to the 404 page.
+    Only author of the post may edit, control managed via Jinja template
     """
 
     def get(self, post_id):
+        """Allows the author to edit the post page"""
         username = self.request.cookies.get('name')
 
         key = ndb.Key('Blogposts', int(post_id), parent=blog_key())
@@ -253,9 +268,13 @@ class DeletePost(BaseHandler):
     Renders the permalink page with the blogpost content and
     if the user clicks submit, the blog post is deleted.
     If a bad url, sends to the 404 page.
+    Restrictions/control managed via Jinja template:
+    only author may delete their own post.
     """
 
     def get(self, post_id):
+        """Renders the post and presents option for author
+        to delete their blogpost"""
         username = self.request.cookies.get('name')
 
         key = ndb.Key('Blogposts', int(post_id), parent=blog_key())
@@ -269,6 +288,7 @@ class DeletePost(BaseHandler):
                     username=check_secure_val(username))
 
     def post(self, post_id):
+        """Allows the author to delete their blogpost"""
         title = self.request.get("title")
         blogPost = self.request.get("blogPost")
         author = self.request.cookies.get('name')
@@ -289,6 +309,7 @@ class Comment(BaseHandler):
     """Adds comments to a permalink blogpost"""
 
     def get(self, post_id):
+        """Form to add a comment"""
         username = self.request.cookies.get('name')
 
         key = ndb.Key('Blogposts', int(post_id), parent=blog_key())
@@ -302,6 +323,8 @@ class Comment(BaseHandler):
                     username=check_secure_val(username))
 
     def post(self, post_id):
+        """Allows posting of comment on a blogpost"""
+
         # info for redirect to permalink page
         key = ndb.Key('Blogposts', int(post_id), parent=blog_key())
         blogPost_key = ndb.Key(
@@ -346,6 +369,9 @@ class EditComment(BaseHandler):
     """
 
     def get(self, comments_id):
+        """Renders form to edit a comment. Only author of comment
+        may edit, control managed via Jinja template"""
+
         u = self.request.cookies.get('name')
         self.username = check_secure_val(u)
 
@@ -357,6 +383,8 @@ class EditComment(BaseHandler):
                     username=self.username)
 
     def post(self, comments_id):
+        """Allows author to edit a comment and post to ndb"""
+
         username = self.request.cookies.get('name')
         comment = self.request.get("comment")
 
@@ -383,6 +411,8 @@ class DeleteComment(BaseHandler):
     """
 
     def get(self, comments_id):
+        """Renders delete comment page. Restrictions managed via Jinja template:
+        only comment author may delete own comments"""
 
         u = self.request.cookies.get('name')
         self.username = check_secure_val(u)
@@ -395,6 +425,7 @@ class DeleteComment(BaseHandler):
                     username=self.username)
 
     def post(self, comments_id):
+        """Allows comment to be deleted by the comment author"""
 
         username = self.request.cookies.get('name')
         comment = self.request.get("comment")
@@ -418,9 +449,11 @@ class SignUp(BaseHandler):
     completed correctly."""
 
     def get(self):
+        """Renders signup form"""
         self.render("signup.html")
 
     def post(self):
+        """Manages correct entry of signup form, with error handling"""
         have_error = False
         self.username = self.request.get('username')
         self.password = self.request.get('password')
@@ -451,6 +484,7 @@ class SignUp(BaseHandler):
             self.done()
 
     def done(self, *a, **kw):
+        """Once complete passed to the Register Handler"""
         raise NotImplementedError
 # [END Sign-up]
 
@@ -464,6 +498,8 @@ class Register(SignUp):
     sets a cookie and redirects to the home page."""
 
     def done(self):
+        """Performs final check on unique username, puts user details to ndb"""
+
         # make sure the user doesn't already exist
         u = User.by_name(self.username)
         if u:
@@ -491,9 +527,13 @@ class Login(BaseHandler):
     """
 
     def get(self):
+        """Renders login form"""
         self.render('login-form.html')
 
     def post(self):
+        """Validates user login details, manages errors, and
+        redirects to home if successful"""
+
         username = self.request.get('username')
         password = self.request.get('password')
 
@@ -519,6 +559,8 @@ class Logout(BaseHandler):
     """
 
     def get(self):
+        """User logout, clear cookie, redirect to home as visitor"""
+
         self.response.headers.add_header('Set-Cookie', 'name=; Path=/')
         self.redirect('/')
 # [END name]

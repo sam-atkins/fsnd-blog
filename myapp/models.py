@@ -1,6 +1,13 @@
+"""
+All ndb Models: Blogposts, Comments, Likes and Users
+Includes classmethods for:
+- finding like id, adding a like, checking if user already liked a post
+- user registration, login and finding a user's id
+"""
+
 from google.appengine.ext import ndb
 
-from hpw import *
+from myapp.hpw import make_pw_hash, valid_pw
 
 
 # [START GQL Blogposts datastore & entity types]
@@ -45,9 +52,9 @@ class Likes(ndb.Model):
         Checks if a blogpost (via the post_id key) already
         has a like by the user"""
 
-        q = Likes.query().filter(Likes.blogpost_id == post_id).filter(
+        query = Likes.query().filter(Likes.blogpost_id == post_id).filter(
             Likes.username == username).get()
-        if q:
+        if query:
             return True
 
     @classmethod
@@ -67,18 +74,12 @@ class Likes(ndb.Model):
             Likes.username == username)
         like_id = query.get()
         return like_id
-
-    @classmethod
-    def _subtract_like(cls, blogpost_id, username):
-        """Used to add or remove a like by a user against a blogpost (key)"""
-        like_count = 1
-        return Likes(blogpost_id=blogpost_id, like_count=like_count,
-                     username=username)
 # [END Likes data Model]
 
 
 # [START GQL User datastore & entity types]
 class User(ndb.Model):
+    """Data Model for Users, with supporting classmethods"""
     name = ndb.StringProperty(required=True)
     pw_hash = ndb.StringProperty(required=True)
     email = ndb.StringProperty()
@@ -86,23 +87,27 @@ class User(ndb.Model):
     # decorators provided by Udacity tutor
     @classmethod
     def by_id(cls, uid):
-        return User.get_by_id(uid, parent=users_key())
+        """Finds the user's id"""
+        return User.get_by_id(uid)
 
     @classmethod
     def by_name(cls, name):
+        """Query to find a username. Used to ensure all usernames are unique"""
         u = User.query().filter(ndb.GenericProperty('name') == name).get()
         return u
 
     @classmethod
-    def register(cls, name, pw, email=None):
-        pw_hash = make_pw_hash(name, pw)
+    def register(cls, name, pword, email=None):
+        """Used during registration to hash a password"""
+        pw_hash = make_pw_hash(name, pword)
         return User(name=name,
                     pw_hash=pw_hash,
                     email=email)
 
     @classmethod
-    def login(cls, name, pw):
+    def login(cls, name, pword):
+        """Validates a login attempt"""
         u = cls.by_name(name)
-        if u and valid_pw(name, pw, u.pw_hash):
+        if u and valid_pw(name, pword, u.pw_hash):
             return u
 # [END GQL User datastore & entity types]

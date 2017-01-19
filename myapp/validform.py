@@ -1,3 +1,8 @@
+"""
+Validates user registration using Regex to check
+for common issues with usernames, passwords and emails
+"""
+
 import re
 
 
@@ -9,12 +14,15 @@ USER_EM = re.compile(r"^[\S]+@[\S]+.[\S]+$")
 
 # helper functions for Signup Handler
 def valid_username(username):
+    """Validates username against regex statement"""
     return username and USER_RE.match(username)
 
 
 def valid_password(password):
+    """Validates password against regex statement"""
     return password and USER_RE.match(password)
 
 
 def valid_email(email):
+    """Validates email against regex statement"""
     return not email or USER_EM.match(email)

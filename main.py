@@ -1,3 +1,7 @@
+"""
+Includes all webapp2.WSGIApplication routes
+"""
+
 # [START imports]
 import webapp2
 
