@@ -3,30 +3,31 @@
 {% block content %}
 <h2>Login</h2>
 <form method="post">
-  <table>
-    <tr>
-      <td class="label">
-        Username
-      </td>
-      <td>
-        <input type="text" name="username" value="{{username}}">
-      </td>
-    </tr>
 
-    <tr>
-      <td class="label">
-        Password
-      </td>
-      <td>
-        <input type="password" name="password" value="">
-      </td>
-    </tr>
-  </table>
 
-  <div class="error">
-    {{error}}
-  </div>
+    <label class="label">
+      Username
+    </label>
+    <div>
+      <input type="text" name="username" value="{{username}}">
+    </div>
+    <br>
 
-  <input type="submit">
+
+    <label class="label">
+      Password
+    </label>
+    <div>
+      <input type="password" name="password" value="">
+    </div>
+    <br><br>
+
+
+    <div class="error">
+      {{error}}
+    </div>
+    <br>
+    <input type="submit">
+    
 </form>
 {% endblock content %}

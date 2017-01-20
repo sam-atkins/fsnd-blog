@@ -5,12 +5,12 @@ for use as cookies to enable usernames
 
 import hashlib
 import hmac
-import myapp.secret_stuff
+import myapp.tools.secret_stuff
 
 
 def hash_str(name):
     """Hashes the var name along with a secret string"""
-    return hmac.new(myapp.secret_stuff.SECRET,
+    return hmac.new(myapp.tools.secret_stuff.SECRET,
                     name.encode('utf-8'), hashlib.md5).hexdigest()
 
 
