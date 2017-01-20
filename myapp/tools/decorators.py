@@ -1,6 +1,10 @@
 """
 Decorators for validating if
+- user logged in
 - post exists
+- user owns post
+- comment exists
+- user owns comment
 """
 
 # [START Imports]
