@@ -148,10 +148,25 @@ class PostPage(BaseHandler):
 
         if not post:
             self.error(404)
-            return
+        else:
+            self.render("permalink.html", post=post, key=key,
+                        comments=comments,
+                        likes=likes, username=check_secure_val(username))
+            # self.done()
 
-        self.render("permalink.html", post=post, key=key, comments=comments,
-                    likes=likes, username=check_secure_val(username))
+        def done(self, *a, **kw):
+            """Passed to the LikePost Handler"""
+            raise NotImplementedError
+
+# [END Permalink post page]
+
+
+# [START Like blogposts Handler]
+class LikePage(PostPage):
+    """
+    Inherits from the post page
+    Enables like and unlike of blogposts
+    """
 
     def post(self, post_id):
         """Enables like and unlike blogposts"""
@@ -209,7 +224,7 @@ class PostPage(BaseHandler):
                 self.render("permalink.html", post=post, key=key,
                             comments=comments, likes=likes,
                             username=check_secure_val(self.username))
-# [END Permalink post page]
+# [END Like blogposts Handler]
 
 
 # [START Edit post page]

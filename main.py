@@ -14,7 +14,7 @@ from myapp.models import *
 app = webapp2.WSGIApplication([
     ('/', MainPage),
     ('/newpost', NewPost),
-    ('/([0-9]+)', PostPage),
+    ('/([0-9]+)', LikePage),  # PostPage old value
     ('/edit/post/([0-9]+)', EditPost),
     ('/delete/post/([0-9]+)', DeletePost),
     ('/comment/([0-9]+)', Comment),
