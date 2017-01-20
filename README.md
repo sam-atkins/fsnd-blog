@@ -56,6 +56,9 @@ To recap (remind myself when coming back to this later on), here's what it means
 /project_root
 	/env 
 	/myapp
+		/handlers
+		/models
+		/tools
 	/static
 	/templates
 	.gitignore
@@ -77,8 +80,9 @@ Virtual environment for managing Python packages and dependencies. Include `env`
 Includes the following:
 
 * `__init__.py` - This file can be empty and basically enables files to be importred. For a more detailed and techical explanation, read [this](https://stackoverflow.com/questions/448271/what-is-init-py-for#448279) and [this](https://docs.python.org/3/tutorial/modules.html#packages).
-* `models.py` - This includes all database related stuff.
-* `views.py` - This includes all the handlers.
+* `/models` - This includes Model classes i.e. all database related stuff split into modules e.g. `user.py`.
+* `/views` - This includes all the handlers, split into modules e.g. `basehandler.py` and `editpost.py`.
+* `/tools` - This includes decorators and all helper functions.
 * I also include other helper function files in this folder.
 
 **/static**
