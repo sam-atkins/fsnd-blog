@@ -10,6 +10,9 @@ from myapp.models.comments import *
 from myapp.models.likes import *
 from myapp.models.user import *
 from myapp.tools.hcookie import check_secure_val
+from myapp.tools.decorators import post_exists
+# import myapp.tools.decorators as decorators
+# post_exists = decorators.post_exists
 # [END imports]
 
 
@@ -21,21 +24,23 @@ class EditPost(BaseHandler):
     Only author of the post may edit, control managed via Jinja template
     """
 
-    def get(self, post_id):
+    @post_exists
+    def get(self, post):
         """Allows the author to edit the post page"""
         username = self.request.cookies.get('name')
 
-        key = ndb.Key('Blogposts', int(post_id), parent=blog_key())
-        post = key.get()
+        # key = ndb.Key('Blogposts', int(post_id), parent=blog_key())
+        # post = key.get()
 
-        if not post:
-            self.error(404)
-            return
+        # if not post:
+        #     self.error(404)
+        #     return
 
         self.render("editpost.html", post=post,
                     username=check_secure_val(username))
 
-    def post(self, post_id):
+    @post_exists
+    def post(self, post):
         """
         If edit is valid, adds edited post to db and redirects back to
         permalink page.
@@ -47,14 +52,14 @@ class EditPost(BaseHandler):
 
         if title and blogPost:
 
-            blogPost_key = ndb.Key(
-                'Blogposts', int(post_id), parent=blog_key())
-            bp = blogPost_key.get()
-            bp.title = title
-            bp.blogPost = blogPost
-            bp.put()
+            # blogPost_key = ndb.Key(
+            #     'Blogposts', int(post_id), parent=blog_key())
+            # bp = blogPost_key.get()
+            post.title = title
+            post.blogPost = blogPost
+            post.put()
 
-            self.redirect('/%s' % str(bp.key.integer_id()))
+            self.redirect('/%s' % str(post.key.integer_id()))
         else:
             username = self.request.cookies.get('name')
             error = "Please submit both a title and a blogpost!"
