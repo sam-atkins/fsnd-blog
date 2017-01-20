@@ -15,36 +15,8 @@
         {{post.blogPost}}
     </div>
 
-    <div class="comments__wrapper">
-        <div class="comments__title">
-            <h3>Comments</h3>
-        </div>
-        {% for comment in comments %}
 
-        <div class="comments__head">
-            <div class="comment__commentator">Comment by: {{comment.commentator}}</div>
-            <div class="comment__created">Commented on: {{comment.comment_date.strftime("%d %b %Y")}}
-            </div>
-        </div>
-            
-            {% if username ==  comment.commentator%}
-
-            <a class="link__button" href="/edit/comment/{{comment.key.integer_id()}}">Edit Comment <i class="fa fa-pencil" aria-hidden="true"></i></a>
-            
-            <a class="link__button" href="/delete/comment/{{comment.key.integer_id()}}">Delete Comment <i class="fa fa-trash-o" aria-hidden="true"></i></a>
-
-           {% endif %}
-        <div class="comment_content">
-            <p class="comment__text">{{comment.comment}}</p>
-        </div>
-
-            
-        {% endfor %}
-        
-    </div>
-        
-
-
+    {# START: Button eg like,comment section #}
     {# Author section #}
     {% if username == post.author %}
     <div class="blog__buttons">
@@ -86,6 +58,34 @@
 
     {% endif %}
 
+    {# START comments section #}
+    <div class="comments__wrapper">
+        <div class="comments__title">
+            <h3>Comments</h3>
+        </div>
+        {% for comment in comments %}
+
+        <div class="comments__head">
+            <div class="comment__commentator">Comment by: {{comment.commentator}}</div>
+            <div class="comment__created">Commented on: {{comment.comment_date.strftime("%d %b %Y")}}
+            </div>
+        </div>
+            
+            {% if username ==  comment.commentator%}
+
+            <a class="link__button" href="/edit/comment/{{comment.key.integer_id()}}">Edit Comment <i class="fa fa-pencil" aria-hidden="true"></i></a>
+            
+            <a class="link__button" href="/delete/comment/{{comment.key.integer_id()}}">Delete Comment <i class="fa fa-trash-o" aria-hidden="true"></i></a>
+
+           {% endif %}
+        <div class="comment_content">
+            <p class="comment__text">{{comment.comment}}</p>
+        </div>
+
+            
+        {% endfor %}
+        
+    </div>
 
 </div>
 
