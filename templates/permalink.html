@@ -36,8 +36,8 @@
         <div>{{error_likes}}</div>
     </div>
         
-    {# Logged in user section #}
-    {% elif username %}
+    {# Logged in user and visitor section #}
+    {% else %}
     <div class="blog__buttons">
 
         <form method="post" name="like">
@@ -46,15 +46,9 @@
 
         <a class="link__button" href="/comment/{{post.key.integer_id()}}">Comment <i class="fa fa-comment" aria-hidden="true"></i></a>
     </div>
-
-    {# visitor section #}
-    {% else %}
-    {# todo: add like count, with error message: ask to signin/login to like a post #}
-    <div class="blog__buttons">
-        <button> {{likes | length }} Likes <i class="fa fa-heart" aria-hidden="true"></i></button>
-
+    <div class="error">
+        <div>{{error_likes}}</div>
     </div>
-    <p>Please <a href="/signup">sign-up</a> or <a href="/login">login </a>to like and comment on posts.</p>
 
     {% endif %}
 

@@ -2,7 +2,7 @@
 
 {% block content %}
 
-{% if username == post.author %}
+{# {% if username == post.author %} #}
 
 <form method="post">
     <label>
@@ -22,12 +22,12 @@
     </form>
 </form> 
 
-{% else %}
+{# {% else %} #}
 
 <div class="no__access">
     <p>Only authors may edit their own posts. Click here to go <a href="/">home</a>.</p>
 </div>
 
-{% endif %}
+{# {% endif %} #}
 
 {% endblock content %}
