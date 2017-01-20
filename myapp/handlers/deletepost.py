@@ -7,6 +7,7 @@ Manages the deleting of blog posts
 from myapp.handlers.basehandler import *
 from myapp.models.blogposts import *
 from myapp.models.user import *
+from myapp.tools.decorators import *
 from myapp.tools.hcookie import check_secure_val
 # [END imports]
 
@@ -21,33 +22,33 @@ class DeletePost(BaseHandler):
     only author may delete their own post.
     """
 
-    def get(self, post_id):
+    @user_logged_in
+    @post_exists
+    @user_owns_post
+    def get(self, post_id, post):
         """Renders the post and presents option for author
         to delete their blogpost"""
+
         username = self.request.cookies.get('name')
-
-        key = ndb.Key('Blogposts', int(post_id), parent=blog_key())
-        post = key.get()
-
         if not post:
             self.error(404)
             return
-
         self.render("deletepost.html", post=post,
                     username=check_secure_val(username))
 
-    def post(self, post_id):
+    @user_logged_in
+    @post_exists
+    @user_owns_post
+    def post(self, post_id, post):
         """Allows the author to delete their blogpost"""
+
         title = self.request.get("title")
         blogPost = self.request.get("blogPost")
         author = self.request.cookies.get('name')
 
-        blogPost_key = ndb.Key(
-            'Blogposts', int(post_id), parent=blog_key())
-        bp = blogPost_key.get()
-        bp.title = title
-        bp.blogPost = blogPost
-        bp.author = check_secure_val(author)
-        bp.key.delete()
+        post.title = title
+        post.blogPost = blogPost
+        post.author = check_secure_val(author)
+        post.key.delete()
         self.redirect('/')
 # [END Delete post page]

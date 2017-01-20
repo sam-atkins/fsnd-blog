@@ -9,6 +9,7 @@ from myapp.models.blogposts import *
 from myapp.models.comments import *
 from myapp.models.likes import *
 from myapp.models.user import *
+from myapp.tools.decorators import *
 from myapp.tools.hcookie import check_secure_val
 # [END imports]
 
@@ -17,6 +18,7 @@ from myapp.tools.hcookie import check_secure_val
 class Comment(BaseHandler):
     """Adds comments to a permalink blogpost"""
 
+    @user_logged_in
     def get(self, post_id):
         """Form to add a comment"""
         username = self.request.cookies.get('name')
@@ -31,6 +33,7 @@ class Comment(BaseHandler):
         self.render("comment.html", post=post,
                     username=check_secure_val(username))
 
+    @user_logged_in
     def post(self, post_id):
         """Allows posting of comment on a blogpost"""
 

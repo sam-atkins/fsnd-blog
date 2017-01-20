@@ -9,10 +9,8 @@ from myapp.models.blogposts import *
 from myapp.models.comments import *
 from myapp.models.likes import *
 from myapp.models.user import *
+from myapp.tools.decorators import *
 from myapp.tools.hcookie import check_secure_val
-from myapp.tools.decorators import post_exists
-# import myapp.tools.decorators as decorators
-# post_exists = decorators.post_exists
 # [END imports]
 
 
@@ -24,23 +22,20 @@ class EditPost(BaseHandler):
     Only author of the post may edit, control managed via Jinja template
     """
 
+    @user_logged_in
     @post_exists
-    def get(self, post):
+    @user_owns_post
+    def get(self, post_id, post):
         """Allows the author to edit the post page"""
         username = self.request.cookies.get('name')
-
-        # key = ndb.Key('Blogposts', int(post_id), parent=blog_key())
-        # post = key.get()
-
-        # if not post:
-        #     self.error(404)
-        #     return
 
         self.render("editpost.html", post=post,
                     username=check_secure_val(username))
 
+    @user_logged_in
     @post_exists
-    def post(self, post):
+    @user_owns_post
+    def post(self, post_id, post):
         """
         If edit is valid, adds edited post to db and redirects back to
         permalink page.
@@ -52,9 +47,6 @@ class EditPost(BaseHandler):
 
         if title and blogPost:
 
-            # blogPost_key = ndb.Key(
-            #     'Blogposts', int(post_id), parent=blog_key())
-            # bp = blogPost_key.get()
             post.title = title
             post.blogPost = blogPost
             post.put()

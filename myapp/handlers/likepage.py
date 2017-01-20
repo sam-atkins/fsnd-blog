@@ -10,6 +10,7 @@ from myapp.models.blogposts import *
 from myapp.models.comments import *
 from myapp.models.likes import *
 from myapp.models.user import *
+from myapp.tools.decorators import *
 from myapp.tools.hcookie import check_secure_val
 # [END imports]
 
@@ -21,6 +22,7 @@ class LikePage(PostPage):
     Enables like and unlike of blogposts
     """
 
+    @user_logged_in
     def post(self, post_id):
         """Enables like and unlike blogposts"""
 
@@ -54,23 +56,15 @@ class LikePage(PostPage):
 
             check_like = Likes._check_like(post_id, self.username)
 
-            # 3 if user has already liked the post, delete the like from ndb
+            # 3 if user has already liked the post, display error message
             if check_like:
-
-                # get the id
-                like_id = Likes._find_like_key(post_id, self.username)
-
-                # get the key
-                like = like_id._key.get()
-
-                # delete
-                like.key.delete()
-
+                error_likes = "Sorry, you can only like a post once!"
                 self.render("permalink.html", post=post, key=key,
                             comments=comments, likes=likes,
-                            username=check_secure_val(self.username))
+                            username=check_secure_val(self.username),
+                            error_likes=error_likes)
 
-            # 4 if user has not yet liked the post, add a like to ndb
+            # 4 if user has not yet liked the post, add a like
             else:
                 add_like = Likes._add_like(post_id, self.username)
                 add_like.put()

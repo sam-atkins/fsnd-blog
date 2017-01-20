@@ -7,6 +7,7 @@ Manages the create and posting of new blog posts
 from myapp.handlers.basehandler import *
 from myapp.models.blogposts import *
 from myapp.models.user import *
+from myapp.tools.decorators import *
 from myapp.tools.hcookie import check_secure_val
 # [END imports]
 
@@ -15,6 +16,7 @@ from myapp.tools.hcookie import check_secure_val
 class NewPost(BaseHandler):
     """Renders the new post page with post entry form"""
 
+    @user_logged_in
     def get(self):
         """Renders form to submit new blogpost"""
         username = self.request.cookies.get('name')
@@ -22,6 +24,7 @@ class NewPost(BaseHandler):
                     blogPost="", error="",
                     username=check_secure_val(username))
 
+    @user_logged_in
     def post(self):
         """
         If submission is valid, adds to db and redirects to permalink page.
