@@ -4,9 +4,17 @@ Includes all webapp2.WSGIApplication routes
 
 # [START imports]
 import webapp2
-
-from myapp.views import *
-from myapp.models import *
+from myapp.handlers.mainpage import MainPage
+from myapp.handlers.newpost import NewPost
+from myapp.handlers.likepage import LikePage
+from myapp.handlers.editpost import EditPost
+from myapp.handlers.deletepost import DeletePost
+from myapp.handlers.comment import Comment
+from myapp.handlers.editcomment import EditComment
+from myapp.handlers.deletecomment import DeleteComment
+from myapp.handlers.register import Register
+from myapp.handlers.login import Login
+from myapp.handlers.logout import Logout
 # [END imports]
 
 
