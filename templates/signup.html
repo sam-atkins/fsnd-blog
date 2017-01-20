@@ -4,56 +4,51 @@
   
 <h2>Signup</h2>
 <form method="post">
-  <table>
-    <tr>
-      <td class="label">
+
+      <label class="label">
         Username
-      </td>
-      <td>
+      </label>
+      <div>
         <input type="text" name="username" value="{{username}}">
-      </td>
-      <td class="error">
+      </div>
+      <div class="error">
         {{error_username}}
-      </td>
-    </tr>
+      </div>
+      <br>
 
-    <tr>
-      <td class="label">
+      <label class="label">
         Password
-      </td>
-      <td>
+      </label>
+      <div>
         <input type="password" name="password" value="">
-      </td>
-      <td class="error">
+      </div>
+      <div class="error">
         {{error_password}}
-      </td>
-    </tr>
+      </div>
 
-    <tr>
-      <td class="label">
+      <label class="label">
         Verify Password
-      </td>
-      <td>
+      </label>
+      <div>
         <input type="password" name="verify" value="">
-      </td>
-      <td class="error">
+      </div>
+      <div class="error">
         {{error_verify}}
-      </td>
-    </tr>
+      </div>
+      <br>
 
-    <tr>
-      <td class="label">
+      <label class="label">
         Email (optional)
-      </td>
-      <td>
+      </label>
+      <div>
         <input type="text" name="email" value="{{email}}">
-      </td>
-      <td class="error">
+      </div>
+      <div class="error">
         {{error_email}}
-      </td>
-    </tr>
-  </table>
+      </div>
+      <br><br>
 
-  <input type="submit">
+      <input type="submit">
+      <br>
 </form>
 {% endblock content %}
