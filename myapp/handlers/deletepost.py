@@ -18,8 +18,6 @@ class DeletePost(BaseHandler):
     Renders the permalink page with the blogpost content and
     if the user clicks submit, the blog post is deleted.
     If a bad url, sends to the 404 page.
-    Restrictions/control managed via Jinja template:
-    only author may delete their own post.
     """
 
     @user_logged_in

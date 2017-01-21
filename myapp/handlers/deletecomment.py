@@ -24,8 +24,7 @@ class DeleteComment(BaseHandler):
     @comment_exists
     @user_owns_comment
     def get(self, comments_id, c):
-        """Renders delete comment page. Restrictions managed via Jinja template:
-        only comment author may delete own comments"""
+        """Renders delete comment page"""
 
         u = self.request.cookies.get('name')
         self.username = check_secure_val(u)

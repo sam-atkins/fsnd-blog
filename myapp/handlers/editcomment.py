@@ -25,8 +25,7 @@ class EditComment(BaseHandler):
     @comment_exists
     @user_owns_comment
     def get(self, comments_id, c):
-        """Renders form to edit a comment. Only author of comment
-        may edit, control managed via Jinja template"""
+        """Renders form to edit a comment."""
 
         u = self.request.cookies.get('name')
         self.username = check_secure_val(u)

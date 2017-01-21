@@ -19,7 +19,6 @@ class EditPost(BaseHandler):
     """
     Renders the permalink/edit page with the blogpost content
     for the user to edit. If a bad url, sends to the 404 page.
-    Only author of the post may edit, control managed via Jinja template
     """
 
     @user_logged_in
