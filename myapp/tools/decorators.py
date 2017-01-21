@@ -14,6 +14,7 @@ from myapp.models.blogposts import *
 from myapp.models.comments import *
 from myapp.models.likes import *
 from myapp.models.user import *
+from myapp.tools.hcookie import check_secure_val
 from google.appengine.ext import ndb
 # [END Imports]
 
@@ -24,7 +25,8 @@ def user_logged_in(function):
     """
     @wraps(function)
     def wrapper(self, *args):
-        user = self.request.cookies.get('name')
+        name = self.request.cookies.get('name')
+        user = check_secure_val(name)
         if user:
             return function(self, *args)
         else:
