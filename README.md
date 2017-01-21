@@ -24,8 +24,9 @@ This project is part of my **Udacity FullStack NanoDegree**. The scope is to bui
 
 ### Status
 
-* Version 1 and 2: Complete
-* Version 3: Live and submitted for Udacity review (see demo link below)
+* Version 1, 2 and 3: Complete
+* Udacity code review: Meets Specifications
+
 
 ### Demo
 Live at [app.spot](https://cubiio-blog.appspot.com/).
