@@ -28,18 +28,18 @@ class BaseHandler(webapp2.RequestHandler):
     Also, includes functions to set, read and check cookies.
     """
 
-    def write(self, *a, **kw):
+    def write(self, *args, **kwargs):
         """shortcut to writing 'response.out.write' """
-        self.response.out.write(*a, **kw)
+        self.response.out.write(*args, **kwargs)
 
     def render_str(self, template, **params):
         """takes as inputs a template and params"""
         t = jinja_env.get_template(template)
         return t.render(params)
 
-    def render(self, template, **kw):
+    def render(self, template, **kwargs):
         """calls write and render_str to render a template"""
-        self.write(self.render_str(template, **kw))
+        self.write(self.render_str(template, **kwargs))
 
     def set_secure_cookie(self, name, val):
         """
