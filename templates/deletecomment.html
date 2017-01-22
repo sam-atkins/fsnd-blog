@@ -2,8 +2,6 @@
 
 {% block content %}
 
-{% if username == comment.commentator %}
-
 <div>
     <div class="blog-head">
         <div class="blog-created">Created: {{comment.comment_date.strftime("%d %b %Y")}}
@@ -21,15 +19,6 @@
         <a class="link__button" href="/">Cancel</a>
 
     </form>
-
-    
-{% else %}
-
-<div class="no__access">
-    <p>Only commentators may delete their own posts. Click here to go <a href="/">home</a>.</p>
-</div>
-
-{% endif %}
 
 </div>
 

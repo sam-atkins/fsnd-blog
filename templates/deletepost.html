@@ -2,7 +2,6 @@
 
 {% block content %}
 
-{% if username == post.author %}
 
 <div>
     <div class="blog-head">
@@ -23,15 +22,6 @@
         <a class="link__button" href="/{{post.key.integer_id()}}">Cancel</a>
 
     </form>
-
-    
-{% else %}
-
-<div class="no__access">
-    <p>Only authors may delete their own posts. Click here to go <a href="/">home</a>.</p>
-</div>
-
-{% endif %}
 
 </div>
 

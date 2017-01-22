@@ -2,8 +2,6 @@
 
 {% block content %}
 
-{% if username %}
-
 <div class="post">
     <div class="blog-head">
         <div class="blog-title">Title: {{post.title}}
@@ -31,12 +29,5 @@
     <a class="link__button" href="/{{post.key.integer_id()}}">Cancel</a>
 
 </form> 
-
-{% else %}
-
-Please <a href="/signup">sign-up</a> or 
-<a href="/login">login</a> to comment.
-
-{% endif %}
 
 {% endblock content %}

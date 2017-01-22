@@ -2,8 +2,6 @@
 
 {% block content %}
 
-{% if username == comment.commentator %}
-
 <form method="post">
     <label>
         <div>Edit your comment</div>
@@ -17,13 +15,5 @@
     <a class="link__button" href="/">Cancel</a>
 
 </form> 
-
-{% else %}
-
-<div class="no__access">
-    <p>Only commentators may edit their own posts. Click here to go <a href="/">home</a>.</p>
-</div>
-
-{% endif %}
 
 {% endblock content %}

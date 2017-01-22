@@ -2,8 +2,8 @@
 
 {% block content %}
 
-	{% if username %}
 	<h2>What do you want to write {{username}}?</h2>
+	
 	<form method="post">
 	    <label>
 	        <div>Blog Title</div>
@@ -20,10 +20,5 @@
 	    <button type="submit">Post</button>
 	    <a class="link__button" href="/">Cancel</a>
 	</form>	
-	{% else %}
-	Please <a href="/signup">sign-up</a> or 
-	<a href="/login">login</a> to write a post.
-
-	{% endif %}
 
 {% endblock content %}
