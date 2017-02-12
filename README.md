@@ -29,7 +29,41 @@ This project is part of my **Udacity FullStack NanoDegree**. The scope is to bui
 
 
 ### Demo
-Live at [app.spot](https://cubiio-blog.appspot.com/).
+Live at [app.spot](https://cubiio-blog.appspot.com/). Screenshots also included below.
+
+
+### Screenshots
+
+**Home Page**
+![Home Page](/docs/homePage.png?raw=true "Home Page")
+
+**Sign Up**
+![Sign Up](/docs/signup.png?raw=true "Sign UpPage")
+
+**Login**
+![Login Page](/docs/login.png?raw=true "Login Page")
+
+**Edit Post Page**
+![Edit Post Page](/docs/editPost.png?raw=true "Edit Post Page")
+
+**Delete Post Page**
+![Delete Page](/docs/delete.png?raw=true "Delete Post Page")
+
+**Like a Post**
+![Like a Post](/docs/postWithLike.png?raw=true "Like a Post")
+
+**One Like is Enough**
+![One Like is Enough](/docs/oneLikeIsEnough.png?raw=true "One Like is Enough")
+
+**You can't like your own post**
+![You can't like your own post](/docs/prohibitLike.png?raw=true "You can't like your own post")
+
+**Comment on a Post Page**
+![Comment on a Post Page](/docs/comment.png?raw=true "Comment on a Post Page")
+
+**Edit Comment**
+![Edit Comment](/docs/commentEdit.png?raw=true "Edit Comment")
+
 
 ## How to install and run
 
